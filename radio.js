@@ -9,8 +9,16 @@
  */
 
 // Cache references to DOM elements.
-var elms = ['station0', 'title0', 'live0', 'playing0', 'station1', 'title1', 'live1', 'playing1', 'station2', 'title2', 'live2', 'playing2', 'station3', 'title3', 'live3', 'playing3', 'station4', 'title4', 'live4', 'playing4'];
-elms.forEach(function(elm) {
+var elms = ['station0', 'title0', 'live0', 'playing0',
+  'station1', 'title1', 'live1', 'playing1',
+  'station2', 'title2', 'live2', 'playing2',
+  'station3', 'title3', 'live3', 'playing3',
+  'station4', 'title4', 'live4', 'playing4',
+  'station5', 'title5', 'live5', 'playing5',
+  'station6', 'title6', 'live6', 'playing6',
+  'station7', 'title7', 'live7', 'playing7'
+];
+elms.forEach(function (elm) {
   window[elm] = document.getElementById(elm);
 });
 
@@ -19,18 +27,18 @@ elms.forEach(function(elm) {
  * Includes all methods for playing, stopping, etc.
  * @param {Array} stations Array of objects with station details ({title, src, howl, ...}).
  */
-var Radio = function(stations) {
+var Radio = function (stations) {
   var self = this;
 
   self.stations = stations;
   self.index = 0;
-  
+
   // Setup the display for each station.
-  for (var i=0; i<self.stations.length; i++) {
+  for (var i = 0; i < self.stations.length; i++) {
     window['title' + i].innerHTML = '<b>' + self.stations[i].freq + '</b> ' + self.stations[i].title;
-    window['station' + i].addEventListener('click', function(index) {
+    window['station' + i].addEventListener('click', function (index) {
       var isNotPlaying = (self.stations[index].howl && !self.stations[index].howl.playing());
-      
+
       // Stop other sounds or the current one.
       radio.stop();
 
@@ -46,7 +54,7 @@ Radio.prototype = {
    * Play a station with a specific index.
    * @param  {Number} index Index in the array of stations.
    */
-  play: function(index) {
+  play: function (index) {
     var self = this;
     var sound;
 
@@ -68,6 +76,7 @@ Radio.prototype = {
     // Begin playing the sound.
     sound.play();
 
+
     // Toggle the display.
     self.toggleStationDisplay(index, true);
 
@@ -78,7 +87,7 @@ Radio.prototype = {
   /**
    * Stop a station's live stream.
    */
-  stop: function() {
+  stop: function () {
     var self = this;
 
     // Get the Howl we want to manipulate.
@@ -98,7 +107,7 @@ Radio.prototype = {
    * @param  {Number} index Index of the station to toggle.
    * @param  {Boolean} state true is on and false is off.
    */
-  toggleStationDisplay: function(index, state) {
+  toggleStationDisplay: function (index, state) {
     var self = this;
 
     // Highlight/un-highlight the row.
@@ -112,36 +121,56 @@ Radio.prototype = {
   }
 };
 
+
 // Setup our new radio and pass in the stations.
 var radio = new Radio([
   {
-    freq: '',
+    freq: '(HipHop)',
     title: "Hot 108",
     src: "http://jbmedia-edge1.cdnstream.com:80/hot108",
     howl: null
   },
   {
-    freq: '',
+    freq: '(HipHop)',
     title: "POWERHITZ.COM",
     src: "http://jbmedia-edge1.cdnstream.com:80/1power",
     howl: null
   },
   {
-    freq: '',
+    freq: '(HipHop)',
     title: "HOT 107.1",
     src: "http://stream1.flinn.com:8000/1071FM.mp3",
     howl: null
   },
   {
-    freq: '',
+    freq: '(HipHop)',
     title: "WREP",
     src: "http://139.99.4.27:80/live",
     howl: null
   },
   {
-    freq: '',
+    freq: '(HipHop)',
     title: "FLOW 103",
     src: "http://hestia2.cdnstream.com:80/1668_128",
     howl: null
-  }
+  },
+  {
+    freq: '(Rock)',
+    title: "HUNTER FM",
+    src: "http://streaming307.radionomy.com:80/RadioHunter-TheHitzChannel",
+    howl: null
+  },
+  {
+    freq: '(Rock)',
+    title: "Radio Rock 1",
+    src: "http://stream.radioreklama.bg:80/radio1rock64",
+    howl: null
+  },
+  {
+    freq: '(NEWS)',
+    title: "FOX News",
+    src: "http://streaming314.radionomy.com:80/foxnews",
+    howl: null
+  },
 ]);
+
