@@ -116,8 +116,8 @@ Radio.prototype = {
 var radio = new Radio([
   {
     freq: '',
-    title: "Hot 108 JAMZ",
-    src: "http://secure.live-streams.nl:80/opus.opus",
+    title: "Dance",
+    src: "http://air.volna.top:80/HypeFM",
     howl: null
   },
   {
@@ -134,14 +134,14 @@ var radio = new Radio([
   },
   {
     freq: '',
-    title: "WREP",
-    src: "http://198.100.156.176:80/live",
+    title: "Christian",
+    src: "http://backup.abidingradio.org:7800/1_autodj",
     howl: null
   },
   {
     freq: '',
-    title: "JPopsuki Radio! ",
-    src: "http://jpopsuki.fm:8000/autodj",
+    title: "Classic Rock",
+    src: "http://mp3channels.webradio.antenne.de:80/rockantenne",
     howl: null
   }
 ]);
