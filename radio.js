@@ -144,8 +144,8 @@ var radio = new Radio([
   },
   {
     freq: '(HipHop)',
-    title: "WREP",
-    src: "http://139.99.4.27:80/live",
+    title: "Old School",
+    src: "http://streaming307.radionomy.com:80/UrbanRadio-OldSchoolRap",
     howl: null
   },
   {
