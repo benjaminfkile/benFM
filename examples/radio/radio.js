@@ -116,32 +116,32 @@ Radio.prototype = {
 var radio = new Radio([
   {
     freq: '',
-    title: "Dance",
-    src: "http://air.volna.top:80/HypeFM",
+    title: "1",
+    src: "http://jbmedia-edge1.cdnstream.com:80/hot108",
     howl: null
   },
   {
     freq: '',
-    title: "Powerhitz.com",
-    src: "http://jbmedia-edge1.cdnstream.com:80/1power",
+    title: "2",
+    src: "http://188.165.11.30:5000/luxfunkradio.mp3",
     howl: null
   },
   {
     freq: '',
-    title: "Flow 103",
+    title: "3",
     src: "http://hestia2.cdnstream.com:80/1668_128",
     howl: null
   },
   {
     freq: '',
-    title: "Christian",
-    src: "http://backup.abidingradio.org:7800/1_autodj",
+    title: "3",
+    src: "http://139.99.4.27:80/live",
     howl: null
   },
   {
     freq: '',
-    title: "Classic Rock",
-    src: "http://mp3channels.webradio.antenne.de:80/rockantenne",
+    title: "4",
+    src: "http://streaming211.radionomy.com:80/radiofmwolf",
     howl: null
   }
 ]);
