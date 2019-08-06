@@ -16,7 +16,8 @@ var elms = ['station0', 'title0', 'live0', 'playing0',
   'station4', 'title4', 'live4', 'playing4',
   'station5', 'title5', 'live5', 'playing5',
   'station6', 'title6', 'live6', 'playing6',
-  'station7', 'title7', 'live7', 'playing7'
+  'station7', 'title7', 'live7', 'playing7',
+  'station8', 'title8', 'live8', 'playing8'
 ];
 elms.forEach(function (elm) {
   window[elm] = document.getElementById(elm);
@@ -158,6 +159,12 @@ var radio = new Radio([
     freq: '(Rock)',
     title: "HUNTER FM",
     src: "http://streaming307.radionomy.com:80/RadioHunter-TheHitzChannel",
+    howl: null
+  },
+  {
+    freq: '(Classic Rock)',
+    title: "idk",
+    src: "http://113fm-edge2.cdnstream.com:80/5133_128",
     howl: null
   },
   {
