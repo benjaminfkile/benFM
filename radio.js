@@ -156,14 +156,14 @@ var radio = new Radio([
     howl: null
   },
   {
-    freq: '(Rock)',
+    freq: '(Hits-various)',
     title: "HUNTER FM",
     src: "http://streaming307.radionomy.com:80/RadioHunter-TheHitzChannel",
     howl: null
   },
   {
     freq: '(Classic Rock)',
-    title: "idk",
+    title: "113 FM the Edge",
     src: "http://113fm-edge2.cdnstream.com:80/5133_128",
     howl: null
   },
@@ -171,12 +171,6 @@ var radio = new Radio([
     freq: '(Rock)',
     title: "Radio Rock 1",
     src: "http://stream.radioreklama.bg:80/radio1rock64",
-    howl: null
-  },
-  {
-    freq: '(NEWS)',
-    title: "FOX News",
-    src: "http://streaming314.radionomy.com:80/foxnews",
     howl: null
   },
 ]);
