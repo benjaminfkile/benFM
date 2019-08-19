@@ -1,5 +1,5 @@
 var stream = "http://stream.dedyn.io:8000/dsbmradio.opus";
-var limit = 15;
+var limit = 25;
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 function parseUrl(args) {
@@ -18,7 +18,7 @@ function parseUrl(args) {
         }
     };
     x.send(null);
-    console.log(args);
+    //console.log(`station id: ${args}`);
     //console.log(proxyUrl + targetUrl + args);
 }
 
@@ -41,13 +41,12 @@ function queryShoutcast() {
         //console.log(q);  
 }
 function renderStations(args) {
-    $(".stations").empty();
+    $(".stations ul").empty();
     for (let i = 0; i < args.response.data.stationlist.station.length; i++) {
-        $(".stations").append(`<div class="s">`);
-        $(".stations").append(`<div class="${args.response.data.stationlist.station[i].id}" onclick="parseUrl(this.className)">${args.response.data.stationlist.station[i].name}`);
+        $(".stations ul").append(`<li><div class="${args.response.data.stationlist.station[i].id}" onclick="parseUrl(this.className)">${args.response.data.stationlist.station[i].name}`);
         //$(".stations").append(`<h3>${args.response.data.stationlist.station[i].name}</h3>`);
-        $(".stations").append(`</div>`);
-        $(".stations").append(`<div/>`);
+        $(".stations ul").append(`</div></li>`);
+
     }
 }
 //queryShoutcast();
