@@ -1,5 +1,9 @@
+*{
+  background-color: black
+}
 .nav{
     display: flex;
+    height: 200px;
 
 }
 .hamburger{
@@ -32,14 +36,27 @@
   }
   .search{
       margin-left: auto;
+      
+  }
+  input{
+    width: 400px;
+    height: 100px;
+    font-size: 80px;
+    color:gray;
+  }
+  #submit{
+    font-size: 50px;
+    color: gray;
   }
   .stations li{
     list-style: none;
     margin-top: 10px;
     margin-bottom: 10px;
+    font-size: 90px;
     background-color: gray;
+    color: gray;
   }
-  
+
 
 
 
