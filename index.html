@@ -5,34 +5,31 @@
   <meta charset="utf-8">
   <title>Page Title</title>
   <meta name="description" content="Webpage for xxxx">
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="index.js"></script>
-  <script>
-    function burger(args) {
-      args.classList.toggle("change");
-    }
-  </script>
+
 
 </head>
 
 <body>
-  <div class="nav">
-    <div class="hamburger" onclick="burger(this)">
-      <div class="bar1"></div>
-      <div class="bar2"></div>
-      <div class="bar3"></div>
-    </div>
-    <div class="search">
-      <button id="submit" onclick="queryShoutcast()">Submit</button>
-      <input class="query" type="text" value="">
-    </div>
-  </div>
+    <div class="dropdown">
+        <div class="hamburger" onclick="burger(this),drop()" class="dropbtn">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+
+        <div id="myDropdown" class="dropdown-content">
+          <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+        </div>
+      </div>
 
   <div class="stations">
 
     <ul>
-      
+
     </ul>
 
   </div>

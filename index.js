@@ -1,5 +1,5 @@
 var stream = "http://stream.dedyn.io:8000/dsbmradio.opus";
-var limit = 25;
+var limit = 500;
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
 
 function parseUrl(args) {
@@ -10,7 +10,11 @@ function parseUrl(args) {
         if (x.readyState == 4 && x.status == 200) {
             var doc = x.responseXML;
             console.log(doc);
-            var url = doc.getElementsByTagName("location")[0].textContent;
+            try {
+                var url = doc.getElementsByTagName("location")[0].textContent;
+            } catch{
+                alert("Sorry this station is not available right now");
+            }
             console.log(url);
             //stream = url;
             renderPayer(url);
@@ -30,15 +34,14 @@ Your browser does not support the audio element.
 </audio>
 `);
 }
-function queryShoutcast() {
+function queryGenre(args) {
 
-        var q = $(".query:text").val();
-        var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${q}&limit=${limit}&f=json&k=OVxbFpTaTgaBkwGC`;
-        fetch(proxyUrl + targetUrl)
-            .then(response => response.json())
-            .then(responseJson => renderStations(responseJson))
-            .catch(error => alert('Something went wrong. Try again later. getPosition(args)'));
-        //console.log(q);  
+    var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${args}&limit=${limit}&f=json&k=OVxbFpTaTgaBkwGC`;
+    fetch(proxyUrl + targetUrl)
+        .then(response => response.json())
+        .then(responseJson => renderStations(responseJson))
+        .catch(error => alert('queryGenre()'));
+    //console.log(q);  
 }
 function renderStations(args) {
     $(".stations ul").empty();
@@ -49,5 +52,48 @@ function renderStations(args) {
 
     }
 }
+function getGenres() {
+    var targetUrl = "http://api.shoutcast.com/genre/primary?k=OVxbFpTaTgaBkwGC&f=json"
+    fetch(proxyUrl + targetUrl)
+        .then(response => response.json())
+        .then(responseJson => renderGenres(responseJson))
+        .catch(error => alert("getGenres()"))
+}
+function renderGenres(args) {
+    for (let i = 0; i < args.response.data.genrelist.genre.length; i++) {
+        //console.log(args.response.data.genrelist.genre[i].name);
+       $("#myDropdown").append(`<li><div class="${args.response.data.genrelist.genre[i].name}" onclick=queryGenre(this.className),drop()>${args.response.data.genrelist.genre[i].name}`);
+       $("#myDropdown").append(`</div></li>`);
+       
+    }
+    
+}
+/*************************css stuff***********************************/
+function drop() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function burger(x) {
+    x.classList.toggle("change");
+}
+
+
+function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("myDropdown");
+    a = div.getElementsByTagName("li");
+    for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+}
+/**********************************************************************/
+getGenres();
 //queryShoutcast();
 //parseUrl("1570578");
