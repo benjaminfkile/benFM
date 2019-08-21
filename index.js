@@ -17,7 +17,7 @@ function parseUrl(args) {
             }
             console.log(url);
             //stream = url;
-            renderPayer(url);
+            renderPlayer(url);
 
         }
     };
@@ -26,7 +26,7 @@ function parseUrl(args) {
     //console.log(proxyUrl + targetUrl + args);
 }
 
-function renderPayer(args) {
+function renderPlayer(args) {
     $(".player").empty();
     $(".player").append(`  <audio controls autoplay>
 <source src=${args} type="audio/mpeg">
@@ -95,5 +95,5 @@ function filterFunction() {
 }
 /**********************************************************************/
 getGenres();
-//queryShoutcast();
-//parseUrl("1570578");
+queryGenre("hiphop");
+
