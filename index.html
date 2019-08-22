@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <title>benFM</title>
   <meta name="description" content="Webpage for xxxx">
-  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="index.js"></script>
@@ -14,28 +14,33 @@
 </head>
 
 <body>
-    <div class="dropdown">
-        <div class="hamburger" onclick="burger(this),drop()" class="dropbtn">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
-        </div>
+<div class="nav">
 
-        <div id="myDropdown" class="dropdown-content">
-          <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+    <div class="dropdown">
+        <div class="hamburger" onclick="drop()" class="dropbtn">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+    
+        <div id="genreSearch" class="dropdown-content">
+          <input type="text" placeholder="Search.." id="input" onkeyup="filterFunction()">
         </div>
       </div>
+      <h1>
+          benFM
+        </h1>
+</div>
 
-  <div class="stations">
-
-    <ul>
-
-    </ul>
-
-  </div>
   <div class="player">
-
+    <audio controls>
+      <source src="http://149.56.175.167:5461/stream" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>
   </div>
+  <div class="stations">
+  </div>
+
 
 
 </body>
