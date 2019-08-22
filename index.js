@@ -52,7 +52,7 @@ function renderStations(args) {
             <ul><li>${args.response.data.stationlist.station[i].ct}</li></ul>
             <div/>`);
     }
-    $(".nav h1").append(`benFM`);
+
 }
 function getGenres() {
     var targetUrl = "http://api.shoutcast.com/genre/primary?k=OVxbFpTaTgaBkwGC&f=json"
