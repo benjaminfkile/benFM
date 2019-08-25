@@ -1,0 +1,101 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+    color: silver;
+    font-size: 50px;
+}
+html,body{
+    height: 100%;
+    background-color: black;
+}
+input{
+    width: 80%;
+    height: 100%;
+    font-size: 65px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    border-radius: 20px;
+    background-color: black;
+}
+.home{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    height: 98%;
+    background-color: black;
+}
+.search{
+    display: flex;
+    height: 5%;
+
+}
+.searchResults{
+    overflow-y:auto;
+    margin-left: auto;
+    margin-right: auto;
+    width: 97%;
+    height: 100%;
+
+}
+.search button{
+    width: 15%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: black;
+    border-style: solid;
+    border-radius: 20px;
+    font-size: 30px;
+}
+.searchResults div{
+    margin-top: 15px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: silver;
+}
+.searchResults h1,li{
+    margin: 10px;
+}
+.searchResults img, object{
+    margin: 10px;
+    width: 160px;
+    height: 160px;
+}
+.nowPlaying{
+    height: 15%;
+    border-style: solid;
+    border-radius: 20px;
+    background-color:red;
+}
+.player{/*
+    height: 70%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+    border-style: solid;
+    border-radius: 20px;
+    background-color: blue; 
+    */
+    display: none;
+}
+.controls{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    height: 10%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1%;
+}
+.controls button{
+    font-size: 30px;
+}
+.back,.prev,.pause,.play,.next{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+
