@@ -1,6 +1,9 @@
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
 var key = "OVxbFpTaTgaBkwGC"
 var limit = 50;
+var baseXspf = "sbin/tunein-station.xspf";
+var last;
+
 
 function queryShoutcast(genre, limit) {
     var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
@@ -29,7 +32,7 @@ function renderStations(args) {
     $(".searchResults").empty();
     for (let i = 0; i < args.length; i++) {
         $(".searchResults").append(
-            `<div class="${args[i].id}" onclick="parseUrl(this.className)">
+            `<div class="${args[i].id}" onclick="parseUrl(baseXspf,this.className)">
                 <h1>${args[i].name}</h1>
                 <object data="${args[i].logo}" type="image/png">
                 <img src="headphones.png" alt="">
@@ -43,19 +46,21 @@ function renderStations(args) {
                 <div/>`);
     }
 }
-function parseUrl(args) {
-    var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
+function parseUrl(base, args) {
+    var targetUrl = `http://yp.shoutcast.com/${base}?id=`;
     var x = new XMLHttpRequest();
     x.open("GET", proxyUrl + targetUrl + args, true);
     x.onreadystatechange = function () {
         if (x.readyState == 4 && x.status == 200) {
             var doc = x.responseXML;
-            try {
-                var url = doc.getElementsByTagName("location")[0].textContent;
-            } catch{
-                alert("station unavailable");
+            if (doc !== null) {
+                try {
+                    var url = doc.getElementsByTagName("location")[0].textContent;
+                } catch{
+                }
+            } else {
+                $(`.${args}`).remove();
             }
-            console.log(url);
             renderPlayer(url);
             console.log(args);
         }
@@ -72,15 +77,15 @@ Your browser does not support the audio element.
     $("audio").hide();
 }
 
-$(document).ready(function() {
-    document.getElementById("searchBtn").addEventListener("click", function(){ searchGenre() });
-    
+$(document).ready(function () {
+    document.getElementById("searchBtn").addEventListener("click", function () { searchGenre() });
+
 });
 
-function searchGenre(){
+function searchGenre() {
     var search = (document.getElementById("searchInput").value);
     queryShoutcast(search, limit)
-    
+
 }
 queryShoutcast("hip hop", limit);
 
