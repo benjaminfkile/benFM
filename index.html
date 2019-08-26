@@ -13,27 +13,40 @@
 </head>
 
 <body>
+    <div class=header>
+        <h1>
+            benFM
+        </h1>
+    </div>
     <div class="home">
-        <div class="search">
-            <input type="text" id="searchInput" value="">
-            <button type="button" id="searchBtn">Search</button>
 
-        </div>
         <div class="searchResults">
-        </div>
-        <!--
-        <div class="nowPlaying">
-            <h2>search for a genre above....</h2>
+            <div class="splash" id="fml">
+                <h2>
+                    Search Over 50,000 Stations,
+                </h2>
+                <h3>
+                    powered by...
+                </h3>
+                <img src="http://wiki.shoutcast.com/images/b/bd/Shoutcast.png" id="shoutLogo" alt="Shoutcast">
+
+            </div>
+
         </div>
     </div>
-    -->
+    <div class="search">
+        <input type="text" onfocus="this.value=''" id="searchInput" value="Search...">
+        <button type="submit" id="searchBtn" style="border: 0; background: transparent">
+                <img src="search.png"  alt="submit" />
+            </button>
 
-        <div class="player">
-            <audio controls>
-                <source src="http://149.56.175.167:5461/stream" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
+    </div>
+    <div class="player">
+        <audio controls>
+            <source src="http://149.56.175.167:5461/stream" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
 </body>
 
 </html>

@@ -1,16 +1,18 @@
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
 var key = "OVxbFpTaTgaBkwGC"
 var limit = 50;
-var base = "sbin/tunein-station.xspf";
 var last;
 
-
-function queryShoutcast(genre, limit) {
-    var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
-    fetch(proxyUrl + targetUrl)
-        .then(response => response.json())
-        .then(responseJson => buildQueu(responseJson))
-        .catch(error => alert("queryShoutcast"));
+function queryGenre(genre, limit) {
+    if (genre !== "Search...") {
+        var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
+        fetch(proxyUrl + targetUrl)
+            .then(response => response.json())
+            .then(responseJson => buildQueu(responseJson))
+            .catch(error => alert("NOTHING FOUND, TRY AGAIN"));
+    }else{
+        alert("SEARCH FOR A GENRE BELOW!");
+    }
 }
 function buildQueu(args) {
     queu = [];
@@ -32,7 +34,7 @@ function renderStations(args) {
     $(".searchResults").empty();
     for (let i = 0; i < args.length; i++) {
         $(".searchResults").append(
-            `<div class="${args[i].id}" onclick="parseUrl(baseXspf,this.className)">
+            `<div class="${args[i].id}" onclick="parseUrl(this.className)">
                 <h1>${args[i].name}</h1>
                 <object data="${args[i].logo}" type="image/png">
                 <img src="headphones.png" alt="">
@@ -46,7 +48,7 @@ function renderStations(args) {
                 <div/>`);
     }
 }
-function parseUrl( args) {
+function parseUrl(args) {
     var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     var x = new XMLHttpRequest();
     x.open("GET", proxyUrl + targetUrl + args, true);
@@ -79,15 +81,14 @@ Your browser does not support the audio element.
 
 $(document).ready(function () {
     document.getElementById("searchBtn").addEventListener("click", function () { searchGenre() });
-
+    
 });
 
 function searchGenre() {
     var search = (document.getElementById("searchInput").value);
-    queryShoutcast(search, limit)
-
+    queryGenre(search, limit)
 }
-queryShoutcast("hip hop", limit);
+
 
 
 
