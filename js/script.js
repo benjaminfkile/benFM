@@ -1,7 +1,7 @@
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
 var key = "OVxbFpTaTgaBkwGC"
 var limit = 50;
-var baseXspf = "sbin/tunein-station.xspf";
+var base = "sbin/tunein-station.xspf";
 var last;
 
 
@@ -46,8 +46,8 @@ function renderStations(args) {
                 <div/>`);
     }
 }
-function parseUrl(base, args) {
-    var targetUrl = `http://yp.shoutcast.com/${base}?id=`;
+function parseUrl( args) {
+    var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     var x = new XMLHttpRequest();
     x.open("GET", proxyUrl + targetUrl + args, true);
     x.onreadystatechange = function () {
