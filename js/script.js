@@ -1,8 +1,12 @@
+//the quei
 var queu = [];
+//heroku
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
+//my dev key
 var key = "OVxbFpTaTgaBkwGC"
-var limit = 10;
-
+//limit of results returned
+var limit = 25;
+//called first, get search results from shoutcast
 function queryGenre(genre, limit) {
     if ((genre !== "Search...") && (genre !== "")) {
         var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
@@ -14,6 +18,7 @@ function queryGenre(genre, limit) {
         alert("SEARCH FOR A GENRE BELOW!");
     }
 }
+//called second, builds an array of station objects
 function buildQueu(args) {
     queu = [];
     var response = args.response.data.stationlist.station;
@@ -30,6 +35,7 @@ function buildQueu(args) {
     }
     renderStations(queu);
 }
+//called third, renders dom elements and listeners and empties old elements
 function renderStations(args) {
     $(".searchResults").empty();
     for (let i = 0; i < args.length; i++) {
@@ -47,7 +53,9 @@ function renderStations(args) {
                 </div>`);
     }
 }
-
+//called on the click of the class in searchResults
+//the onlcick methods were added recursivly in the 
+//renderStations() method
 function parseUrl(args) {
     var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     var x = new XMLHttpRequest();
@@ -69,6 +77,8 @@ function parseUrl(args) {
     };
     x.send(null);
 }
+//renders the html5 audio player and calls the renderStations()
+//method once more to remove the old html5 audio players
 function renderPlayer(url, id) {
     renderStations(queu);
     $(`.${id}`).append(`  <audio controls autoplay>
@@ -76,8 +86,9 @@ function renderPlayer(url, id) {
 Your browser does not support the audio element.
 </audio>
 `);
-    console.log(id);
+   //console.log(id);
 }
+//wait to add listeners (do i need to wait?)
 $(document).ready(function () {
     document.getElementById("searchBtn").addEventListener("click", function () { searchGenre() });
     $("input").keypress(function (e) {
@@ -86,6 +97,7 @@ $(document).ready(function () {
         }
     });
 });
+//simple function that searches genres
 function searchGenre() {
     var search = (document.getElementById("searchInput").value);
     queryGenre(search, limit)
