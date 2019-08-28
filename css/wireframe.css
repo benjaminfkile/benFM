@@ -25,21 +25,21 @@ input{
     font-size: 65px;
     margin-left: auto;
     margin-right: auto;
-    border-style: solid;
-    text-align: center;
-    border-radius: 20px;
+    border: none;
     background-color: black;
 }
-.home{
-    margin-top: 1%;
-    margin-bottom: 1%;
+.contentContainer{
     height: 86%;
     background-color: black;
 }
 .search{
     display: flex;
     height: 6%;
-
+    width: 93%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
 }
 .search img{
     width: 98px;
@@ -52,6 +52,7 @@ input{
     margin-right: auto;
     width: 97%;
     height: 100%;
+    
 
 }
 /* width */
@@ -61,13 +62,13 @@ input{
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: darkgray; 
+    background: black; 
   }
   
   /* Handle */
   ::-webkit-scrollbar-thumb {
     height: 10px;
-    background: black; 
+    background: silver; 
   }
 
 .search button{
@@ -78,12 +79,16 @@ input{
 
 }
 .searchResults div{
+    width: 97%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 15px;
+    background-color: silver;
     border-style: solid;
     border-radius: 10px;
-    border-color: silver;
 }
 .searchResults h1,li{
+    color: black;
     margin: 10px;
 }
 .searchResults img, object{
@@ -91,24 +96,27 @@ input{
     width: 128px;
     height: 128px;
 }
-#fml{
+#hS{
     width: 70%;
     margin-top: 50%;
     margin-left: auto;
     margin-right: auto;
     border-style: none;
     text-align: center;
+    background-color: black;
     }
-    #fml img{
+    #hS img{
     width: 70%;
     margin-left: auto;
     margin-right: auto;
     }
-    #fml h2,h3{
+    #hS h2,h3{
+
      margin-top: 15px;
     }
-    #fml h3{
+    #hS h3{
         margin-bottom: 30%;
+
     }
     
 .player{

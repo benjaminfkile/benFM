@@ -1,16 +1,15 @@
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
 var key = "OVxbFpTaTgaBkwGC"
 var limit = 50;
-var last;
 
 function queryGenre(genre, limit) {
-    if (genre !== "Search...") {
+    if ((genre !== "Search...") && (genre !== "")) {
         var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
         fetch(proxyUrl + targetUrl)
             .then(response => response.json())
             .then(responseJson => buildQueu(responseJson))
             .catch(error => alert("NOTHING FOUND, TRY AGAIN"));
-    }else{
+    } else {
         alert("SEARCH FOR A GENRE BELOW!");
     }
 }
@@ -38,16 +37,17 @@ function renderStations(args) {
                 <h1>${args[i].name}</h1>
                 <object data="${args[i].logo}" type="image/png">
                 <img src="headphones.png" alt="">
+                </object>
                 <ul>
                 <li>Genre: ${args[i].genre}</li>
                 <li>${args[i].bitRate} bps</li>
                 <li>Listeners: ${args[i].listeners}</li>
                 <li>Now Playing: ${args[i].currentTrack}</li>
-                <ul>
-              </object>
-                <div/>`);
+                </ul>
+                </div>`);
     }
 }
+
 function parseUrl(args) {
     var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     var x = new XMLHttpRequest();
@@ -63,27 +63,29 @@ function parseUrl(args) {
             } else {
                 $(`.${args}`).remove();
             }
-            renderPlayer(url);
-            console.log(args);
+            renderPlayer(url, args);
+            //console.log(args);
         }
     };
     x.send(null);
 }
-function renderPlayer(args) {
-    $(".player").empty();
-    $(".player").append(`  <audio controls autoplay>
-<source src=${args} type="audio/mpeg">
+function renderPlayer(url, id) {
+    renderStations(queu);
+    $(`.${id}`).append(`  <audio controls autoplay>
+<source src=${url} type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 `);
-    $("audio").hide();
+    console.log(id);
 }
-
 $(document).ready(function () {
     document.getElementById("searchBtn").addEventListener("click", function () { searchGenre() });
-    
+    $("input").keypress(function (e) {
+        if (e.which == 13) {
+            searchGenre();
+        }
+    });
 });
-
 function searchGenre() {
     var search = (document.getElementById("searchInput").value);
     queryGenre(search, limit)
