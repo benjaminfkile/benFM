@@ -36,9 +36,6 @@ function renderStations(args) {
         $(".searchResults").append(
             `<div class="${args[i].id}" onclick="parseUrl(this.className)">
                 <h1>${args[i].name}</h1>
-                <object data="${args[i].logo}" type="image/png">
-                <img src="headphones.png" alt="">
-                </object>
                 <ul>
                 <li>Genre: ${args[i].genre}</li>
                 <li>${args[i].bitRate} bps</li>
