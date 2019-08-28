@@ -1,3 +1,4 @@
+var queu = [];
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
 var key = "OVxbFpTaTgaBkwGC"
 var limit = 50;
