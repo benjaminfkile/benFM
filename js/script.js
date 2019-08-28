@@ -35,7 +35,9 @@ function renderStations(args) {
     for (let i = 0; i < args.length; i++) {
         $(".searchResults").append(
             `<div class="${args[i].id}" onclick="parseUrl(this.className)">
-                <h1>${args[i].name}</h1>
+                <h1>${args[i].name}
+                </h1>
+                <img src="${args[i].logo}" alt="Not Found" onerror=this.src="headphones.png">
                 <ul>
                 <li>Genre: ${args[i].genre}</li>
                 <li>${args[i].bitRate} bps</li>

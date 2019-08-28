@@ -91,10 +91,12 @@ input{
     color: black;
     margin: 10px;
 }
-.searchResults img, object{
+.searchResults img{
     margin: 10px;
     width: 128px;
     height: 128px;
+
+
 }
 #hS{
     width: 70%;
