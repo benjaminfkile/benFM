@@ -1,12 +1,13 @@
-//the quei
+//the queu
 var queu = [];
-//heroku
+//heroku proxy
 var proxyUrl = "https://cors-anywhere.herokuapp.com/"
 //my dev key
 var key = "OVxbFpTaTgaBkwGC"
 //limit of results returned
 var limit = 25;
 //called first, get search results from shoutcast
+var loadStatus;
 function queryGenre(genre, limit) {
     if ((genre !== "Search...") && (genre !== "")) {
         var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
@@ -72,7 +73,7 @@ function parseUrl(args) {
                 $(`.${args}`).remove();
             }
             renderPlayer(url, args);
-            //console.log(args);
+            //console.log(url);
         }
     };
     x.send(null);
@@ -81,30 +82,41 @@ function parseUrl(args) {
 //method once more to remove the old html5 audio players
 function renderPlayer(url, id) {
     renderStations(queu);
-    $(`.${id}`).append(`  <audio controls autoplay>
-<source src=${url} type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
-`);
-   //console.log(id);
+    $(`.${id}`).append(`
+    <audio controls="controls" autoplay>
+    <source src=${url} type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>`);
+    /*
+    <audio oncanplay="success()" controls="controls" autoplay>
+    loadStatus = 0;
+    setTimeout(failure, 10000)
+    */
+}
+function success() {
+    loadStatus = 1;
+    clearTimeout(failure());
+    console.log("load: " + loadStatus + ":)");
+}
+function failure() {
+    if(loadStatus === 0){
+        alert("STATION REFUSED TO CONNECT :(");
+        console.log("load: " + loadStatus + ":(");
+    }
+}
+//function that searches genres
+function searchGenre() {
+    //scroll back to top on new search
+    $(".searchResults").animate({ scrollTop: 0 }, 1000);
+    var search = (document.getElementById("searchInput").value);
+    queryGenre(search, limit)
 }
 //wait to add listeners (do i need to wait?)
 $(document).ready(function () {
-    document.getElementById("searchBtn").addEventListener("click", function () { searchGenre() });
+    $("#searchBtn").click(function () { searchGenre() });
     $("input").keypress(function (e) {
         if (e.which == 13) {
             searchGenre();
         }
     });
 });
-//simple function that searches genres
-function searchGenre() {
-    var search = (document.getElementById("searchInput").value);
-    queryGenre(search, limit)
-}
-
-
-
-
-
-
