@@ -85,11 +85,12 @@ input{
     border-style: solid;
     border-radius: 10px;
 }
-.searchResults h1,li{
+.searchResults h1{
     color: silver;
     margin: 10px;
 }
 .searchResults li{
+    list-style: none;
     color: silver;
     margin: 10px;
 }

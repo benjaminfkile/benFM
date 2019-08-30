@@ -7,7 +7,6 @@ var key = "OVxbFpTaTgaBkwGC"
 //limit of results returned
 var limit = 25;
 //called first, get search results from shoutcast
-var loadStatus;
 function queryGenre(genre, limit) {
     if ((genre !== "Search...") && (genre !== "")) {
         var targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
@@ -58,22 +57,20 @@ function renderStations(args) {
 //the onlcick methods were added recursivly in the 
 //renderStations() method
 function parseUrl(args) {
+    var stationId = args;
     var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     var x = new XMLHttpRequest();
-    x.open("GET", proxyUrl + targetUrl + args, true);
+    x.open("GET", proxyUrl + targetUrl + stationId, true);
     x.onreadystatechange = function () {
         if (x.readyState == 4 && x.status == 200) {
             var doc = x.responseXML;
-            if (doc !== null) {
                 try {
                     var url = doc.getElementsByTagName("location")[0].textContent;
                 } catch{
+                    alert("STATION UNAVAILABLE");
+                    $(`.${stationId}`).remove(); 
                 }
-            } else {
-                $(`.${args}`).remove();
-            }
-            renderPlayer(url, args);
-            //console.log(url);
+                renderPlayer(url,stationId);
         }
     };
     x.send(null);
@@ -83,26 +80,15 @@ function parseUrl(args) {
 function renderPlayer(url, id) {
     renderStations(queu);
     $(`.${id}`).append(`
-    <audio controls="controls" autoplay>
+    <audio oncanplay="success()" controls="controls">
     <source src=${url} type="audio/mpeg">
     Your browser does not support the audio element.
     </audio>`);
-    /*
-    <audio oncanplay="success()" controls="controls" autoplay>
-    loadStatus = 0;
-    setTimeout(failure, 10000)
-    */
+    //$(`.${id}`).append(`<h2>loading...</h2>`);
 }
 function success() {
-    loadStatus = 1;
-    clearTimeout(failure());
-    console.log("load: " + loadStatus + ":)");
-}
-function failure() {
-    if(loadStatus === 0){
-        alert("STATION REFUSED TO CONNECT :(");
-        console.log("load: " + loadStatus + ":(");
-    }
+    $("audio").trigger("play");
+    //$(`.${id} h2`).empty();
 }
 //function that searches genres
 function searchGenre() {
