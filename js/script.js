@@ -57,20 +57,20 @@ function renderStations(args) {
 //the onlcick methods were added recursivly in the 
 //renderStations() method
 function parseUrl(args) {
-    var stationId = args;
     var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     var x = new XMLHttpRequest();
-    x.open("GET", proxyUrl + targetUrl + stationId, true);
+    x.open("GET", proxyUrl + targetUrl + args, true);
     x.onreadystatechange = function () {
         if (x.readyState == 4 && x.status == 200) {
             var doc = x.responseXML;
-                try {
-                    var url = doc.getElementsByTagName("location")[0].textContent;
-                } catch{
-                    alert("STATION UNAVAILABLE");
-                    $(`.${stationId}`).remove(); 
-                }
-                renderPlayer(url,stationId);
+            try {
+                var url = doc.getElementsByTagName("location")[0].textContent;
+            } catch{
+                alert("STATION UNAVAILABLE");
+                $(`.${args}`).remove();
+
+            }
+            renderPlayer(url, args);
         }
     };
     x.send(null);
@@ -80,15 +80,23 @@ function parseUrl(args) {
 function renderPlayer(url, id) {
     renderStations(queu);
     $(`.${id}`).append(`
-    <audio oncanplay="success()" controls="controls">
+    <audio oncanplay="success(${id})" controls="controls">
     <source src=${url} type="audio/mpeg">
-    Your browser does not support the audio element.
     </audio>`);
-    //$(`.${id}`).append(`<h2>loading...</h2>`);
+    $(`.${id}`).append(
+        `<div class="load">
+        <h2>loading...</h2>
+        <div/>`);
+
+
 }
-function success() {
+function success(args) {
     $("audio").trigger("play");
-    //$(`.${id} h2`).empty();
+    $(".load").empty();
+    $(`.${args}`).append(
+        `<div class="success">
+        <h2>Live</h2>
+        <div/>`);
 }
 //function that searches genres
 function searchGenre() {
