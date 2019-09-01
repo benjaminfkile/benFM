@@ -1,7 +1,15 @@
+//initialize an empty station array
 let queue = [];
+//heroku proxy URL to stop corb errors
 let proxyUrl = "https://cors-anywhere.herokuapp.com/";
+//my shoutcast developer key
 let key = "OVxbFpTaTgaBkwGC";
+//limit of results from shoutcast
 let limit = 30;
+/*
+query ShoutCast with params passed from 
+searchGenre(genre,limit)
+*/
 function queryGenre(genre, limit) {
     if ((genre !== "Search...") && (genre !== "")) {
         let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
@@ -13,16 +21,16 @@ function queryGenre(genre, limit) {
         alert("SEARCH FOR A GENRE BELOW!");
     };
 };
+//build an array with station objects from the response
 function buildQueue(args) {
-    var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
-    var response = args.response.data.stationlist.station;
+    let targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
+    let response = args.response.data.stationlist.station;
     queue = [];
     $(".searchResults").empty();
     for (let i = 0; i < response.length; i++) {
         fetch(proxyUrl + targetUrl + response[i].id, { mode: 'cors' })
             .then((res) => res.text())
             .then(responseXML => {
-                //console.log(responseXML);
                 let oParser = new DOMParser();
                 let oDOM = oParser.parseFromString(responseXML, "application/xml");
                 try {
@@ -41,9 +49,14 @@ function buildQueue(args) {
                 } catch{
                     console.log("INVALID RESPONSE");
                 }
-            }); 
+            });
     }
 }
+/*
+render an html5 audio player to the DOM and test if
+if the stream can play, if so call renderStation(station) and 
+render the the new <div></div> to the DOM
+*/
 function checkAudio(station) {
     $(".audioTest").empty();
     $(".audioTest").append(`
@@ -54,9 +67,8 @@ function checkAudio(station) {
     audio.onloadedmetadata = (event) => {
         renderStation(station);
     };
-    //$(".audioTest").empty();
-    
 }
+//apend the html elements to the DOM call by call
 function renderStation(station) {
     $(".searchResults").append(
         `<div class="${station.id}" id="${station.id}">
@@ -73,10 +85,11 @@ function renderStation(station) {
     let id = station.id;
     let url = station.url;
     $(`#${station.id}`).click(function () {
-        play(id, url)
+        shout(id, url)
     });
 }
-function play(id, url) {
+//finally play the stream on user click
+function shout(id, url) {
     $(".nowPlaying").empty()
     $(`.${id}`).append(`
         <div class="nowPlaying">
@@ -86,12 +99,20 @@ function play(id, url) {
         </div>`
     );
 }
+/*
+scroll the contents of the .searchResults div in the html file
+back to the top and get the new search results from the DOM
+call queryGenre with params "search" and "limit"
+*/
 function searchGenre() {
     $(".searchResults").animate({ scrollTop: 0 }, 1000);
     let search = (document.getElementById("searchInput").value);
     queryGenre(search, limit)
 }
-
+/*
+add search button listener and key #13 listener then
+call searchGenre() on #13 keypress or button click
+*/
 $(document).ready(function () {
     $("#searchBtn").click(function () { searchGenre() });
     $("input").keypress(function (args) {
