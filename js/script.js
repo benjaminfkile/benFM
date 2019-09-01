@@ -53,50 +53,55 @@ function renderStations(args) {
                 </div>`);
     }
 }
-//called on the click of the class in searchResults
-//the onlcick methods were added recursivly in the 
-//renderStations() method
 function parseUrl(args) {
     var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
-    var x = new XMLHttpRequest();
-    x.open("GET", proxyUrl + targetUrl + args, true);
-    x.onreadystatechange = function () {
-        if (x.readyState == 4 && x.status == 200) {
-            var doc = x.responseXML;
+
+    fetch(proxyUrl + targetUrl + args, { mode: 'cors' })
+        .then(response => response.text())
+        .then(responseXML => {
+            // console.log(responseXML);
+            let oParser = new DOMParser();
+            let oDOM = oParser.parseFromString(responseXML, "application/xml");
+            // console.log(oDOM);
+            let url;
             try {
-                var url = doc.getElementsByTagName("location")[0].textContent;
+                url = oDOM.getElementsByTagName("location")[0].textContent
             } catch{
                 alert("STATION UNAVAILABLE");
                 $(`.${args}`).remove();
-
             }
             renderPlayer(url, args);
-        }
-    };
-    x.send(null);
+        });
 }
-//renders the html5 audio player and calls the renderStations()
-//method once more to remove the old html5 audio players
 function renderPlayer(url, id) {
     renderStations(queu);
     $(`.${id}`).append(`
-    <audio oncanplay="success(${id})" controls="controls">
-    <source src=${url} type="audio/mpeg">
-    </audio>`);
-    $(`.${id}`).append(
-        `<div class="load">
-        <h2>loading...</h2>
-        <div/>`);
-
-
+            <audio id="aud" controls="controls">
+            <source src=${url} type="audio/mpeg">
+            </audio>`);
+    const audio = document.querySelector('audio');
+    
+    audio.oncanplay = (event) => {
+        console.log("success");
+        success(id);
+    };
+    audio.onerror = (event) => {
+        console.log("error");
+    };
+    audio.onabort = (event) => {
+        console.log("abort");
+    };
+    audio.onstalled = (event) => {
+        console.log("stalled");
+    };
+    audio.onsuspend = (event) => {
+        console.log("suspend");
+    };
 }
 function success(args) {
     $("audio").trigger("play");
     $(".load").empty();
-    $(`.${args}`).append(
-        `<div class="success">
-        <h2>Live</h2>
-        <div/>`);
+
 }
 //function that searches genres
 function searchGenre() {

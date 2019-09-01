@@ -99,18 +99,6 @@ input{
     width: 128px;
     height: 128px;
 }
-.load {
-    background-color: yellow !important;
-    border: none !important;
-    width: 33% !important;
-    text-align: center !important;
-}
-.success {
-    background-color: green !important;
-    border: none !important;
-    width: 33% !important;
-    text-align: center !important;
-}
 #hS{
     width: 70%;
     margin-top: 70%;
@@ -134,7 +122,7 @@ input{
 
     }
     audio{
-        width: 50%;
+        /*display: none;*/
 
     }
 
