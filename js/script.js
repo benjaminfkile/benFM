@@ -5,7 +5,7 @@ let proxyUrl = "https://cors-anywhere.herokuapp.com/";
 //my dev key
 let key = "OVxbFpTaTgaBkwGC";
 //limit of results returned
-let limit = 50;
+let limit = 20;
 //called first, get search results from shoutcast
 function queryGenre(genre, limit) {
     if ((genre !== "Search...") && (genre !== "")) {
@@ -57,7 +57,7 @@ function buildQueue(args) {
 function checkAudio(station) {
     $(".audioTest").empty();
     $(".audioTest").append(`
-    <audio id="aud" controls="controls">
+    <audio id="aud">
     <source src=${station.url} type="audio/mpeg">
     </audio>`);
     const audio = document.querySelector('audio');
@@ -65,6 +65,8 @@ function checkAudio(station) {
         console.log("success");
         renderStation(station);
     };
+    $(".audioTest audio").pause();
+    $(".audioTest").empty();
 
 }
 function renderStation(station) {
@@ -90,10 +92,10 @@ function renderStation(station) {
 function play(id, url) {
     //console.log(id);
     //console.log(url);
-    $(".nowPlaying").remove();
+    $(".nowPlaying").empty()
     $(`.${id}`).append(`
         <div class="nowPlaying">
-        <audio controls="controls" autoplay>
+        <audio controls autoplay>
         <source src=${url} type="audio/mpeg">
         </audio>
         </div>`
