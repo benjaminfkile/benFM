@@ -1,7 +1,7 @@
 let queue = [];
 let proxyUrl = "https://cors-anywhere.herokuapp.com/";
 let key = "OVxbFpTaTgaBkwGC";
-let limit = 15;
+let limit = 30;
 function queryGenre(genre, limit) {
     if ((genre !== "Search...") && (genre !== "")) {
         let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
@@ -54,7 +54,7 @@ function checkAudio(station) {
     audio.onloadedmetadata = (event) => {
         renderStation(station);
     };
-    $(".audioTest").empty();
+    //$(".audioTest").empty();
     
 }
 function renderStation(station) {
@@ -94,8 +94,8 @@ function searchGenre() {
 
 $(document).ready(function () {
     $("#searchBtn").click(function () { searchGenre() });
-    $("input").keypress(function (e) {
-        if (e.which == 13) {
+    $("input").keypress(function (args) {
+        if (args.which == 13) {
             searchGenre();
         }
     });
