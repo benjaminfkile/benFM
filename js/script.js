@@ -1,12 +1,7 @@
-//the queu
 let queue = [];
-//heroku proxy
 let proxyUrl = "https://cors-anywhere.herokuapp.com/";
-//my dev key
 let key = "OVxbFpTaTgaBkwGC";
-//limit of results returned
-let limit = 40;
-//called first, get search results from shoutcast
+let limit = 15;
 function queryGenre(genre, limit) {
     if ((genre !== "Search...") && (genre !== "")) {
         let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
@@ -18,12 +13,10 @@ function queryGenre(genre, limit) {
         alert("SEARCH FOR A GENRE BELOW!");
     };
 };
-
 function buildQueue(args) {
     var targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     var response = args.response.data.stationlist.station;
     queue = [];
-
     $(".searchResults").empty();
     for (let i = 0; i < response.length; i++) {
         fetch(proxyUrl + targetUrl + response[i].id, { mode: 'cors' })
@@ -44,14 +37,11 @@ function buildQueue(args) {
                         url: oDOM.getElementsByTagName("location")[0].textContent
                     };
                     queue.push(station);
-                    //renderStation(station)
                     checkAudio(station);
-
                 } catch{
                     console.log("INVALID RESPONSE");
                 }
-            });
-
+            }); 
     }
 }
 function checkAudio(station) {
@@ -62,15 +52,12 @@ function checkAudio(station) {
     </audio>`);
     const audio = document.querySelector('audio');
     audio.onloadedmetadata = (event) => {
-        //console.log("success");
         renderStation(station);
     };
-    $(".audioTest audio").pause();
     $(".audioTest").empty();
-
+    
 }
 function renderStation(station) {
-    //console.log(station.url);
     $(".searchResults").append(
         `<div class="${station.id}" id="${station.id}">
                 <h1>${station.name}
@@ -90,8 +77,6 @@ function renderStation(station) {
     });
 }
 function play(id, url) {
-    //console.log(id);
-    //console.log(url);
     $(".nowPlaying").empty()
     $(`.${id}`).append(`
         <div class="nowPlaying">
@@ -101,10 +86,7 @@ function play(id, url) {
         </div>`
     );
 }
-// queryGenre("edm", lim);
-
 function searchGenre() {
-    //scroll back to top on new search
     $(".searchResults").animate({ scrollTop: 0 }, 1000);
     let search = (document.getElementById("searchInput").value);
     queryGenre(search, limit)
