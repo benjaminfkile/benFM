@@ -2,19 +2,23 @@
     margin: 0px;
     padding: 0px;
     font-family: 'Open Sans', sans-serif;
-    color: silver;
+    color: rgb(255, 255, 255);
     font-size: 50px;
 }
 html,body{
     overflow: hidden;
     height: 100%;
-    background-color: rgb(49,7,7);
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
 }
 h1{
     margin-top: 10px;
     margin-left: 3%;
     height: 5%;
     width: 97%;
+}
+p{
+    color: rgb(0, 0, 0);
 }
 
 input{
@@ -24,11 +28,13 @@ input{
     margin-left: auto;
     margin-right: auto;
     border: none;
-    background-color: rgb(49,7,7);
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
 }
 .contentContainer{
     height: 86%;
-    background-color: rgb(49,7,7);
+    background-color: rgb(0, 0, 0);
+  
 }
 .search{
     display: flex;
@@ -60,7 +66,7 @@ input{
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: rgb(49,7,7);
+    background: rgb(0, 0, 0);
   }
   
   /* Handle */
@@ -81,17 +87,18 @@ input{
     margin-left: auto;
     margin-right: auto;
     margin-top: 15px;
-    background-color: rgb(16,25,15);
+    background-color: rgb(255, 255, 255);
     border-style: solid;
     border-radius: 10px;
 }
 .searchResults h1{
-    color: silver;
+    color: rgb(0, 0, 0);
     margin: 10px;
 }
 .searchResults li{
+    color: rgb(0, 0, 0);
     list-style: none;
-    color: silver;
+
     margin: 10px;
 }
 .searchResults img{
@@ -106,7 +113,7 @@ input{
     margin-right: auto;
     border-style: none;
     text-align: center;
-    background-color: rgb(49,7,7);
+    background-color: rgb(0, 0, 0);
     }
     #hS img{
     width: 70%;

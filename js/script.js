@@ -42,7 +42,8 @@ function buildQueue(args) {
                         listeners: response[i].lc,
                         logo: response[i].logo,
                         id: response[i].id,
-                        url: oDOM.getElementsByTagName("location")[0].textContent
+                        url: oDOM.getElementsByTagName("location")[0].textContent,
+                        state: 1
                     };
                     queue.push(station);
                     checkAudio(station);
@@ -65,8 +66,10 @@ function checkAudio(station) {
 }
 //apend the html elements to the DOM call by call
 function renderStation(station) {
-        $(".searchResults").append(
-            `<div class="${station.id}" id="${station.id}">
+    $(".searchResults").append(`
+                    <div class="${station.id}" id="${station.id}">
+                    <div class="stationState" id="${station.id}state">
+                    </div>
                     <h1>${station.name}
                     </h1>
                     <img src="${station.logo}" alt="Not Found" onerror=this.src="headphones.png">
@@ -76,25 +79,37 @@ function renderStation(station) {
                     <li>Listeners: ${station.listeners}</li>
                     <li>Now Playing: ${station.currentTrack}</li>
                     </ul>
-                    </div>`);
-        let id = station.id;
-        let url = station.url;
-        $(`#${station.id}`).click(function () {
-            shout(id, url)
-        });
-    }
-
-
-//finally play the stream on user click
-function shout(id, url) {
-    $(".nowPlaying").empty()
-    $(`.${id}`).append(`
-        <div class="nowPlaying">
-        <audio controls autoplay>
-        <source src=${url} type="audio/mpeg">
-        </audio>
-        </div>`
+                    </div>`
     );
+    let id = station.id;
+    let url = station.url;
+    $(`#${station.id}`).click(function () {
+        station.state++;
+        shout(id, url, station.state)
+    });
+}
+//finally play the stream on user click
+function shout(id, url, state) {
+    var sounds = document.getElementsByTagName('audio');
+    for (i = 0; i < sounds.length; i++) sounds[i].pause();
+    $(".stationState").empty();
+    if (state % 2 == 0) {
+        $(`.${id}`).append(`
+            <audio id="aud" controls autoplay>
+            <source src=${url} type="audio/mpeg">
+            </audio>`
+        );
+        $("audio").hide();
+        $(`#${id}state`).append(`<p>Live</p>`)
+    }
+    else {
+        let stream = document.getElementById("aud");
+        stream.pause();
+        $(".status").empty();
+    }
+}
+function pauseStream() {
+
 }
 /*
 scroll the contents of the .searchResults div in the html file
