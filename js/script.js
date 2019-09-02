@@ -53,41 +53,38 @@ function buildQueue(args) {
     }
 }
 /*
-render an html5 audio player to the DOM and test if
-if the stream can play, if so call renderStation(station) and 
+if the stream can play, call renderStation(station) and 
 render the the new <div></div> to the DOM
 */
 function checkAudio(station) {
-    $(".audioTest").empty();
-    $(".audioTest").append(`
-    <audio id="aud">
-    <source src=${station.url} type="audio/mpeg">
-    </audio>`);
-    const audio = document.querySelector('audio');
-    audio.onloadedmetadata = (event) => {
+    let audioElement = document.createElement('audio');
+    audioElement.src = station.url;
+    audioElement.oncanplay = function () {
         renderStation(station);
-    };
+    }
 }
 //apend the html elements to the DOM call by call
 function renderStation(station) {
-    $(".searchResults").append(
-        `<div class="${station.id}" id="${station.id}">
-                <h1>${station.name}
-                </h1>
-                <img src="${station.logo}" alt="Not Found" onerror=this.src="headphones.png">
-                <ul>
-                <li>Genre: ${station.genre}</li>
-                <li>${station.bitRate} bps</li>
-                <li>Listeners: ${station.listeners}</li>
-                <li>Now Playing: ${station.currentTrack}</li>
-                </ul>
-                </div>`);
-    let id = station.id;
-    let url = station.url;
-    $(`#${station.id}`).click(function () {
-        shout(id, url)
-    });
-}
+        $(".searchResults").append(
+            `<div class="${station.id}" id="${station.id}">
+                    <h1>${station.name}
+                    </h1>
+                    <img src="${station.logo}" alt="Not Found" onerror=this.src="headphones.png">
+                    <ul>
+                    <li>Genre: ${station.genre}</li>
+                    <li>${station.bitRate} bps</li>
+                    <li>Listeners: ${station.listeners}</li>
+                    <li>Now Playing: ${station.currentTrack}</li>
+                    </ul>
+                    </div>`);
+        let id = station.id;
+        let url = station.url;
+        $(`#${station.id}`).click(function () {
+            shout(id, url)
+        });
+    }
+
+
 //finally play the stream on user click
 function shout(id, url) {
     $(".nowPlaying").empty()
