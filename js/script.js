@@ -5,12 +5,14 @@ let proxyUrl = "https://cors-anywhere.herokuapp.com/";
 //my shoutcast developer key
 let key = "OVxbFpTaTgaBkwGC";
 //limit of results from shoutcast
-let limit = 30;
+let limit = 25;
+var eventIndex = -1;
 /*
 query ShoutCast with params passed from 
 searchGenre(genre,limit)
 */
 function queryGenre(genre, limit) {
+    $("#hS h4").css("color", "rgb(255,255,255)");
     if ((genre !== "Search...") && (genre !== "")) {
         let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
         fetch(proxyUrl + targetUrl)
@@ -68,49 +70,54 @@ function checkAudio(station) {
 function renderStation(station) {
     $(".searchResults").append(`
                     <div class="${station.id}" id="${station.id}">
-                    <div class="stationState" id="${station.id}state">
-                    </div>
                     <h1>${station.name}
                     </h1>
                     <img src="${station.logo}" alt="Not Found" onerror=this.src="headphones.png">
                     <ul>
                     <li>Genre: ${station.genre}</li>
-                    <li>${station.bitRate} bps</li>
+                    <li>Bitrate: ${station.bitRate}</li>
                     <li>Listeners: ${station.listeners}</li>
                     <li>Now Playing: ${station.currentTrack}</li>
                     </ul>
                     </div>`
     );
-    let id = station.id;
-    let url = station.url;
     $(`#${station.id}`).click(function () {
         station.state++;
-        shout(id, url, station.state)
+        shout(station.id, station.url, station.state)
     });
 }
 //finally play the stream on user click
 function shout(id, url, state) {
     var sounds = document.getElementsByTagName('audio');
     for (i = 0; i < sounds.length; i++) sounds[i].pause();
-    $(".stationState").empty();
     if (state % 2 == 0) {
+        eventIndex++;
+        $(`.${id}`).remove("audio");
         $(`.${id}`).append(`
             <audio id="aud" controls autoplay>
             <source src=${url} type="audio/mpeg">
             </audio>`
         );
         $("audio").hide();
-        $(`#${id}state`).append(`<p>Live</p>`)
     }
-    else {
-        let stream = document.getElementById("aud");
-        stream.pause();
-        $(".status").empty();
-    }
+    var stream = document.getElementsByTagName("audio")[eventIndex];
+    stream.addEventListener("pause", function() { 
+        console.log("pause");
+        $(".lds-ripple").hide();
+        $(".lds-facebook").hide();
+    }, true);
+    stream.addEventListener("play", function() { 
+        console.log("play");
+        $(".lds-ripple").hide();
+        $(".lds-facebook").show();
+    }, true);
+    stream.addEventListener("loadstart", function() { 
+        console.log("load");
+        $(".lds-ripple").show();
+        $(".lds-facebook").hide();
+    }, true);
 }
-function pauseStream() {
 
-}
 /*
 scroll the contents of the .searchResults div in the html file
 back to the top and get the new search results from the DOM
@@ -120,6 +127,7 @@ function searchGenre() {
     $(".searchResults").animate({ scrollTop: 0 }, 1000);
     let search = (document.getElementById("searchInput").value);
     queryGenre(search, limit)
+
 }
 /*
 add search button listener and key #13 listener then
@@ -132,4 +140,8 @@ $(document).ready(function () {
             searchGenre();
         }
     });
+    $(".lds-ripple").hide();
+    $(".lds-facebook").hide();
 });
+
+
