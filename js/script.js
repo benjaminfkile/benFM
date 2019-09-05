@@ -88,6 +88,7 @@ function renderStation(station) {
 }
 //finally play the stream on user click
 function shout(id, url, state) {
+    $(".searchResults div").css("background-color", "rgb(255,255,255)");
     var sounds = document.getElementsByTagName('audio');
     for (i = 0; i < sounds.length; i++) sounds[i].pause();
     if (state % 2 == 0) {
@@ -98,20 +99,23 @@ function shout(id, url, state) {
             <source src=${url} type="audio/mpeg">
             </audio>`
         );
+        $(".searchResults div").css("border","none");
+        $(`.${id}`).css("border","15px solid white");
+
         $("audio").hide();
     }
     var stream = document.getElementsByTagName("audio")[eventIndex];
-    stream.addEventListener("pause", function() { 
+    stream.addEventListener("pause", function () {
         console.log("pause");
         $(".lds-ripple").hide();
         $(".lds-facebook").hide();
     }, true);
-    stream.addEventListener("play", function() { 
+    stream.addEventListener("play", function () {
         console.log("play");
         $(".lds-ripple").hide();
         $(".lds-facebook").show();
     }, true);
-    stream.addEventListener("loadstart", function() { 
+    stream.addEventListener("loadstart", function () {
         console.log("load");
         $(".lds-ripple").show();
         $(".lds-facebook").hide();
@@ -124,6 +128,8 @@ back to the top and get the new search results from the DOM
 call queryGenre with params "search" and "limit"
 */
 function searchGenre() {
+    eventIndex = -1;
+
     $(".searchResults").animate({ scrollTop: 0 }, 1000);
     let search = (document.getElementById("searchInput").value);
     queryGenre(search, limit)
