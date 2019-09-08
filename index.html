@@ -6,27 +6,16 @@
     <title>benFM</title>
     <meta name="description" content="Webpage for xxxx">
     <link rel="stylesheet" href="./css/wireframe.css">
+    <link rel="stylesheet" href="./css/loaders.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./js/script.js"></script>
 </head>
 
 <body>
-    <header>
         <h1>
             benFM
         </h1>
-        <div class="lds-ripple">
-            <div></div>
-            <div></div>
-        </div>
-        <div class="lds-facebook">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </header>
-
     <div class="contentContainer">
         <div class="searchResults">
             <div class="homeScreen" id="hS">
@@ -36,16 +25,14 @@
                 <h3>
                     powered by...
                 </h3>
-                <img src="http://wiki.shoutcast.com/images/b/bd/Shoutcast.png" id="shoutLogo" alt="Shoutcast">
-                <h4>Querying Shoutcast...</h4>
+                <img src="./res/shout.png" id="shoutLogo" alt="Shoutcast">
             </div>
-
         </div>
     </div>
     <div class="search">
         <input type="text" onfocus="this.value=''" id="searchInput" value="Search...">
         <button type="submit" id="searchBtn" style="border: 0; background: transparent">
-            <img src="search.png" alt="submit" />
+            <img src="./res/search.png" alt="submit" />
         </button>
     </div>
 </body>
