@@ -5,17 +5,16 @@ let proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 //my shoutcast developer key
 let key = 'OVxbFpTaTgaBkwGC';
 //limit of results from shoutcast
-let limit = 50;
+let limit = 100;
 //makes a call to the shoutcast api 
 function queryGenre(genre, limit) {
+    $('.searchResults').empty();
     if ((genre !== 'Search...') && (genre !== '')) {
         let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
         fetch(proxyUrl + targetUrl)
             .then(response => response.json())
             .then(responseJson => buildQueue(responseJson))
-            .catch(error => alert('NOTHING FOUND, TRY AGAIN'));
-    } else {
-        alert('SEARCH FOR A GENRE BELOW!');
+            .catch(error => alert(error));
     };
 };
 //creates an array of station objects
@@ -35,7 +34,6 @@ function buildQueue(args) {
                     let station = {
                         name: response[i].name,
                         genre: response[i].genre,
-                        currentTrack: response[i].ct,
                         bitRate: response[i].br,
                         listeners: response[i].lc,
                         logo: response[i].logo,
@@ -46,7 +44,7 @@ function buildQueue(args) {
                     queue.push(station);
                     checkAudio(station);
                 } catch{
-                    //console.log('INVALID RESPONSE');
+                    console.log('INVALID RESPONSE');
                 }
             });
     }
@@ -129,18 +127,24 @@ function shout(id, url, state) {
         }, true)
     }
     else {
-       sounds = document.getElementsByTagName('audio');
-       for (i = 0; i < sounds.length; i++) sounds[i].remove();
+        sounds = document.getElementsByTagName('audio');
+        for (i = 0; i < sounds.length; i++) sounds[i].remove();
         console.log('stop');
     }
 }
 //search a genre
 function searchGenre() {
-    $('.searchResults').empty();
+
     let search = (document.getElementById('searchInput').value);
-    $('.searchResults').append(`
+    if ((search !== "") && (search !== "Search...")) {
+        $('.searchResults').append(`
     <h5>Searching: '${search}'<h5>`);
-    queryGenre(search, limit)
+        queryGenre(search, limit)
+    } else {
+        alert('SEARCH FOR A GENRE BELOW!');
+    }
+
+
 }
 //set up click and return key listener for input
 $(document).ready(function () {
