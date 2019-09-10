@@ -154,4 +154,9 @@ $(document).ready(function () {
             searchGenre();
         }
     });
+    
+    
+    console.log(genreArray[Math.floor(Math.random()*genreArray.length)]);
+    queryGenre(genreArray[Math.floor(Math.random()*genreArray.length)],limit);
+    
 });
