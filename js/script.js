@@ -131,8 +131,6 @@ function shout(id, url, state) {
 function searchGenre() {
     let search = (document.getElementById('searchInput').value);
     if ((search !== "") && (search !== "Search...")) {
-        $('.searchResults').append(`
-    <h5>Searching: '${search}'<h5>`);
         queryGenre(search, limit)
     } else {
         alert('SEARCH FOR A GENRE BELOW!');
@@ -147,5 +145,4 @@ $(document).ready(function () {
         }
     });
     queryGenre(genreArray[Math.floor(Math.random() * genreArray.length)], limit);
-
 });
