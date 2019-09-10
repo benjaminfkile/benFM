@@ -5,7 +5,7 @@ let proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 //my shoutcast developer key
 let key = 'OVxbFpTaTgaBkwGC';
 //limit of results from shoutcast
-let limit = 100;
+let limit = 40;
 //makes a call to the shoutcast api 
 function queryGenre(genre, limit) {
     $('.searchResults').empty();
