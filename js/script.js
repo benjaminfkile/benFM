@@ -58,7 +58,6 @@ function checkAudio(station) {
     audioElement.onerror = function () {
         $(`.${station.id}`).hide();
     }
-
 }
 //render the stations to the DOM
 function renderStation(station) {
@@ -97,7 +96,6 @@ function shout(id, url, state) {
         $('audio').hide();
         sounds = document.getElementsByTagName('audio')[0];
         sounds.addEventListener('playing', function () {
-            console.log('play');
             $('.stationState').empty();
             $(`#${id}state`).append(`
             <div class='lds-facebook'>
@@ -109,9 +107,7 @@ function shout(id, url, state) {
             </div>
             </div>`);
         }, true)
-
         sounds.addEventListener('loadstart', function () {
-            console.log('load');
             $('.state').empty();
             $(`#${id}state`).append(`
             <div class='lds-ellipsis'>
@@ -129,12 +125,10 @@ function shout(id, url, state) {
     else {
         sounds = document.getElementsByTagName('audio');
         for (i = 0; i < sounds.length; i++) sounds[i].remove();
-        console.log('stop');
     }
 }
 //search a genre
 function searchGenre() {
-
     let search = (document.getElementById('searchInput').value);
     if ((search !== "") && (search !== "Search...")) {
         $('.searchResults').append(`
@@ -143,8 +137,6 @@ function searchGenre() {
     } else {
         alert('SEARCH FOR A GENRE BELOW!');
     }
-
-
 }
 //set up click and return key listener for input
 $(document).ready(function () {
@@ -154,9 +146,6 @@ $(document).ready(function () {
             searchGenre();
         }
     });
-    
-    
-    console.log(genreArray[Math.floor(Math.random()*genreArray.length)]);
-    queryGenre(genreArray[Math.floor(Math.random()*genreArray.length)],limit);
-    
+    queryGenre(genreArray[Math.floor(Math.random() * genreArray.length)], limit);
+
 });
