@@ -68,7 +68,7 @@ function renderStation(station) {
                     <img src=${station.logo} alt='Not Found' onerror=this.src='./res/headphones.png'>
                     <ul>
                     <li>Genre: ${station.genre}</li>
-                    <li>${station.bitRate} bps</li>
+                    <li>${station.bitRate} kbps</li>
                     <li>Listeners: ${station.listeners}</li>
                     </ul>
                     <div class='stationState' id='${station.id}state'>
