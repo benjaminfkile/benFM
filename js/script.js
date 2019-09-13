@@ -8,23 +8,24 @@ let key = 'OVxbFpTaTgaBkwGC';
 let limit = 40;
 //makes a call to the shoutcast api 
 function queryGenre(genre, limit) {
-    $('.searchResults').empty();
-    if ((genre !== 'Search...') && (genre !== '')) {
+    if ((genre !== 'Search a music genre...') && (genre !== '')) {
         let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
         fetch(proxyUrl + targetUrl)
             .then(response => response.json())
-            .then(responseJson => buildQueue(responseJson))
-            .catch(error => alert(error));
+            .then(responseJson => buildQueue(responseJson, genre))
+            .catch(error => alert("Nothing Found"));
     };
 };
 //creates an array of station objects
 //and calls checkAudio(station) in the loop
-function buildQueue(args) {
+function buildQueue(args, genre) {
     let targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     let response = args.response.data.stationlist.station;
     queue = [];
     $('.searchResults').empty();
     for (let i = 0; i < response.length; i++) {
+        $(".header h2").empty();
+        $(".header h2").append("working...");
         fetch(proxyUrl + targetUrl + response[i].id, { mode: 'cors' })
             .then((res) => res.text())
             .then(responseXML => {
@@ -42,21 +43,26 @@ function buildQueue(args) {
                         state: 1
                     };
                     queue.push(station);
-                    checkAudio(station);
+                    checkAudio(station, genre);
                 } catch{
-                    console.log('INVALID RESPONSE');
+                    $(".header h2").empty();
+                    $(".header h2").append("filtering...");
                 }
-            });
+            })
+            .catch(error => alert("Failed, please refresh the page"));
     }
 }
 //first render the station 
 //if it wont play then hide it
-function checkAudio(station) {
+function checkAudio(station, genre) {
     renderStation(station);
     let audioElement = document.createElement('audio');
     audioElement.src = station.url;
     audioElement.onerror = function () {
         $(`.${station.id}`).hide();
+        $(".header h2").empty();
+        $(".header h2").append(`${genre.toUpperCase()}`);
+        $("#searchInput").val("Search a music genre...");
     }
 }
 //render the stations to the DOM
@@ -130,15 +136,19 @@ function shout(id, url, state) {
 //search a genre
 function searchGenre() {
     let search = (document.getElementById('searchInput').value);
-    if ((search !== "") && (search !== "Search...")) {
+    if ((search !== "") && (search !== "Search a music genre...")) {
         queryGenre(search, limit)
     } else {
         alert('SEARCH FOR A GENRE BELOW!');
+        $("#searchInput").val("Search a music genre...");
     }
+    
 }
 //set up click and return key listener for input
 $(document).ready(function () {
-    $('#searchBtn').click(function () { searchGenre() });
+    $('#searchBtn').click(function () {
+        searchGenre()
+    });
     $('input').keypress(function (args) {
         if (args.which == 13) {
             searchGenre();

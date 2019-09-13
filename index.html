@@ -16,19 +16,27 @@
 </head>
 
 <body>
+    <header class="header">
         <h1>
             benFM
         </h1>
-    <div class="contentContainer">
+        <h2>
+            
+        </h2>
+    </header>
+    <div class="search">
+            <input type="text" onfocus="this.value=''" id="searchInput" value="Search a music genre...">
+            <button type="submit" id="searchBtn" style="border: 0; background: transparent">
+                <img src="./res/search.png" alt="submit" />
+            </button>
+        </div>
+    <section class="contentContainer">
         <div class="searchResults">
         </div>
-    </div>
-    <div class="search">
-        <input type="text" onfocus="this.value=''" id="searchInput" value="Search...">
-        <button type="submit" id="searchBtn" style="border: 0; background: transparent">
-            <img src="./res/search.png" alt="submit" />
-        </button>
-    </div>
+    </section>
+
+
+
 </body>
 
 </html>
