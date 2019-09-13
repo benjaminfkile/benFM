@@ -101,11 +101,12 @@
     margin-bottom: 0px;
     background-color: rgb(255, 255, 255);
     border-style: solid;
-    border-radius: 10px;
+    border-radius: 2px;
   }
   .searchResults h1{
     color: rgb(0, 0, 0);
-    margin: 10px;
+    margin-left: 10px;
+    margin-bottom: 35px;
     font-size: 15px;
   }
   .searchResults li{
@@ -115,7 +116,8 @@
     margin: 10px;
   }
   .searchResults img{
-    margin: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
     width: 64px;
     height: 64px;
   }
