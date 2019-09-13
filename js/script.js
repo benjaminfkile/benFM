@@ -5,7 +5,7 @@ let proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 //my shoutcast developer key
 let key = 'OVxbFpTaTgaBkwGC';
 //limit of results from shoutcast
-let limit = 40;
+let limit = 50;
 //makes a call to the shoutcast api 
 function queryGenre(genre, limit) {
     if ((genre !== 'Search a music genre...') && (genre !== '')) {
@@ -46,7 +46,7 @@ function buildQueue(args, genre) {
                     checkAudio(station, genre);
                 } catch{
                     $(".header h2").empty();
-                    $(".header h2").append("filtering...");
+                    $(".header h2").append("working...");
                 }
             })
             .catch(error => alert("Failed, please refresh the page"));

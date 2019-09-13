@@ -21,7 +21,7 @@
   header h2{
     width: 100%;
     margin-right: 3%;
-    margin-top: 30px;
+    margin-top: 25px;
     text-align: right;
     color: rgb(255, 255, 255);
   }
@@ -103,17 +103,18 @@
   .searchResults h1{
     color: rgb(0, 0, 0);
     margin: 10px;
-    font-size: 30px;
+    font-size: 45px;
   }
   .searchResults li{
     color: rgb(0, 0, 0);
     list-style: none;
+    font-size: 45px;
     margin: 10px;
   }
   .searchResults img{
     margin: 10px;
-    width: 128px;
-    height: 128px;
+    width: 256px;
+    height: 256px;
   }
   .searchResults .stationState{
     width: 50px;
