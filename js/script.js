@@ -5,16 +5,29 @@ let proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 //my shoutcast developer key
 let key = 'OVxbFpTaTgaBkwGC';
 //limit of results from shoutcast
-let limit = 100;
+let limit = 50;
+let attempt = 0;
 //makes a call to the shoutcast api 
-function queryGenre(genre, limit) {
-    if ((genre !== 'Search a music genre...') && (genre !== '')) {
-        let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
-        fetch(proxyUrl + targetUrl)
-            .then(response => response.json())
-            .then(responseJson => buildQueue(responseJson, genre))
-            .catch(error => alert("Nothing Found"));
-    };
+function queryGenre(args, limit) {
+    let genre = args;
+    let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
+    fetch(proxyUrl + targetUrl)
+        .then(response => response.json())
+        .then(data => {
+            let arr = data.response.data.stationlist
+            console.log(arr.station);
+            if(arr.station == null){
+                attempt++;
+                queryGenre(genre,limit);
+            }
+            else{
+                attempt = 0;
+                buildQueue(data,args);
+            } 
+        })
+        .catch(error => console.error(error))
+        console.log(attempt);
+
 };
 //creates an array of station objects
 //and calls checkAudio(station) in the loop
@@ -22,10 +35,7 @@ function buildQueue(args, genre) {
     let targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     let response = args.response.data.stationlist.station;
     queue = [];
-    $('.searchResults').empty();
     for (let i = 0; i < response.length; i++) {
-        $(".header h2").empty();
-        $(".header h2").append("working...");
         fetch(proxyUrl + targetUrl + response[i].id, { mode: 'cors' })
             .then((res) => res.text())
             .then(responseXML => {
@@ -43,28 +53,25 @@ function buildQueue(args, genre) {
                         state: 1
                     };
                     queue.push(station);
-                    checkAudio(station, genre);
-                } catch{
-                    $(".header h2").empty();
-                    $(".header h2").append("working...");
+                    checkAudio(station,genre);
+                } catch (error) {
+                    console.log(error);
                 }
             })
-            .catch(error => alert("Failed, please refresh the page"));
+            .catch(error => console.log(error));
     }
+    console.log(queue);
 }
-//first render the station 
-//if it wont play then hide it
+
 function checkAudio(station, genre) {
     renderStation(station);
     let audioElement = document.createElement('audio');
     audioElement.src = station.url;
     audioElement.onerror = function () {
         $(`.${station.id}`).hide();
-        $(".header h2").empty();
-        $(".header h2").append(`${genre.toUpperCase()}`);
-        $("#searchInput").val("Search a music genre...");
     }
 }
+
 //render the stations to the DOM
 function renderStation(station) {
     $('.searchResults').append(`
@@ -142,15 +149,16 @@ function searchGenre() {
         alert('SEARCH FOR A GENRE BELOW!');
         $("#searchInput").val("Search a music genre...");
     }
-    
 }
 //set up click and return key listener for input
 $(document).ready(function () {
     $('#searchBtn').click(function () {
-        searchGenre()
+        $('.searchResults').empty();
+        searchGenre();
     });
     $('input').keypress(function (args) {
         if (args.which == 13) {
+            $('.searchResults').empty();
             searchGenre();
         }
     });
