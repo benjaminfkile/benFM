@@ -16,10 +16,8 @@ function queryGenre(genre, limit) {
         .then(data => {
             if (attempt < 3) {
                 let arr = data.response.data.stationlist
-                //a little recursion to fix 
+                //a little recursion to handle
                 //shoutcasts incomplete responses
-                //this is a bug I went over with my mentor 
-                //and he agrees the api is buggy
                 if (arr.station == null) {
                     queryGenre(args, limit);
                 }
@@ -27,6 +25,7 @@ function queryGenre(genre, limit) {
                     buildQueue(data, genre);
                 }
                 //try and handle bad search requests
+                // such as  queryGenre(safsafsd, limit)
             } else {
                 alert("Nothing Found :(");
                 $('.landing').show();
@@ -107,7 +106,6 @@ function shout(id, url, state) {
     for (i = 0; i < sounds.length; i++) sounds[i].remove();
     $('.stationState').empty();
     if (state % 2 == 0) {
-        $(`.${id}`).css("border","5px solid rgb(128, 128, 128)");
         $(`.${id}`).append(`
             <audio id='aud' controls autoplay>
             <source src=${url} type='audio/mpeg'>
@@ -159,16 +157,15 @@ function shout(id, url, state) {
     else {
         sounds = document.getElementsByTagName('audio');
         for (i = 0; i < sounds.length; i++) sounds[i].remove();
-        $(`.${id}`).css("border","none");
     }
 }
 //set up the queryGenre function for arguments
 function searchGenre() {
+    var toast = document.getElementById("snackbar");
+    toast.className = "show";
+    setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 2900);
     let search = (document.getElementById('searchInput').value);
     if ((search !== "") && (search !== "Search a music genre...")) {
-        var toast = document.getElementById("snackbar");
-        toast.className = "show";
-        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 6000);
         queryGenre(search, limit)
     } else {
         alert('SEARCH FOR A GENRE BELOW!');

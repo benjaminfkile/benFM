@@ -264,11 +264,11 @@
 #snackbar {
   visibility: hidden; 
   min-width: 350px; 
-  margin-left: -250px; 
+  margin-left: -190px; 
   background-color: #333; 
   color: #fff; 
   text-align: center; 
-  font-size: 30px;
+  font-size: 15px;
   border-radius: 2px; 
   padding: 16px; 
   position: fixed; 
