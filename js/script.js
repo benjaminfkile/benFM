@@ -16,8 +16,7 @@ function queryGenre(genre, limit) {
         .then(data => {
             if (attempt < 3) {
                 let arr = data.response.data.stationlist
-                //recursion to handl calls this method again
-                //to handle incomplete reponses from shoutcast
+                //recursion to handle incomplete reponses from shoutcast
                 if (arr.station == null) {
                     queryGenre(args, limit);
                 }
