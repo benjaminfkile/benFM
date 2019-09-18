@@ -16,8 +16,8 @@ function queryGenre(genre, limit) {
         .then(data => {
             if (attempt < 3) {
                 let arr = data.response.data.stationlist
-                //a little recursion to handle
-                //shoutcasts incomplete responses
+                //recursion to handl calls this method again
+                //to handle incomplete reponses from shoutcast
                 if (arr.station == null) {
                     queryGenre(args, limit);
                 }
@@ -27,11 +27,10 @@ function queryGenre(genre, limit) {
                 //try and handle bad search requests
                 // such as  queryGenre(safsafsd, limit)
             } else {
-                alert("Nothing Found :(");
+                alert('Nothing Found :(');
                 $('.landing').show();
                 $('.sk-circle').hide();
             }
-
         })
         .catch(error => alert('something went wrong, please try again'));
 };
@@ -39,7 +38,6 @@ function queryGenre(genre, limit) {
 function buildQueue(args, genre) {
     let targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     let response = args.response.data.stationlist.station;
-    queue = [];
     for (let i = 0; i < response.length; i++) {
         fetch(proxyUrl + targetUrl + response[i].id, { mode: 'cors' })
             .then((res) => res.text())
@@ -57,15 +55,16 @@ function buildQueue(args, genre) {
                         url: oDOM.getElementsByTagName('location')[0].textContent,
                         state: 1
                     };
-                    queue.push(station);
                     checkAudio(station, genre);
-                } catch (error) {
-                    console.log(error);
+                } catch{
+                    //nohting to do, the station is corrupt
+                    //no need to display a bad station 
+                    //to a user or let them know about it
+                    //move on to parse the next url
                 }
             })
-            .catch(error => console.log(error));
+            .catch(error => alert('Nothing Found :('));
     }
-    console.log(queue);
 }
 //make sure the station will play
 function checkAudio(station, genre) {
@@ -152,7 +151,7 @@ function shout(id, url, state) {
             <div>
             </div>
             </div>`);
-        }, true); 
+        }, true);
     }
     else {
         sounds = document.getElementsByTagName('audio');
@@ -161,18 +160,19 @@ function shout(id, url, state) {
 }
 //set up the queryGenre function for arguments
 function searchGenre() {
-    var toast = document.getElementById("snackbar");
-    toast.className = "show";
-    setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 2900);
+    var toast = document.getElementById('snackbar');
+    toast.className = 'show';
+    setTimeout(function () { toast.className = toast.className.replace('show', ''); }, 2900);
     let search = (document.getElementById('searchInput').value);
-    if ((search !== "") && (search !== "Search a music genre...")) {
+    if ((search !== "") && (search !== 'Search a music genre...')) {
         queryGenre(search, limit)
     } else {
         alert('SEARCH FOR A GENRE BELOW!');
-        $("#searchInput").val("Search a music genre...");
+        $('#searchInput').val('Search a music genre...');
     }
 }
-$(document).ready(function () {
+//add listeners and remove loading circle
+function initiate() {
     $('#searchBtn').click(function () {
         attempt = 0;
         $('.landing').show();
@@ -191,7 +191,8 @@ $(document).ready(function () {
             searchGenre();
         }
     });
-
-    //queryGenre(genreArray[Math.floor(Math.random() * genreArray.length)], limit);
     $('.sk-circle').hide();
+}
+document.addEventListener('DOMContentLoaded', function () {
+    initiate();
 });
