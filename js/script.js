@@ -168,6 +168,7 @@ function searchGenre() {
     } else {
         alert('SEARCH FOR A GENRE BELOW!');
         $('#searchInput').val('Search a music genre...');
+        $('.sk-circle').hide();
     }
 }
 //add listeners and remove loading circle
