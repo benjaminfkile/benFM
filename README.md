@@ -20,7 +20,7 @@ HTML/CSS/JavaScript/jQuery
 
 Mobile Landing
 <br>
-![mobilePortrait](https://user-images.githubusercontent.com/34235864/65115787-6b079100-d9a5-11e9-900c-137b39269f9b.PNG)
+![mobileLanding](https://user-images.githubusercontent.com/34235864/65213005-a5ceff00-da61-11e9-93e5-ddd37b423311.PNG)
 <br>
 Mobile Portrait
 <br>
