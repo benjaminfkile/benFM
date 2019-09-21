@@ -7,8 +7,22 @@ const limit = 50;
 //attempts at api call
 let attempt = 0;
 //query shoutcast
+let numerator = 1;
+let denomitaor = limit;
+let progress = 0;
 function queryGenre(genre, limit) {
     attempt++;
+    if (attempt === 1) {
+        $('.header h2').empty();
+        //$('.header h2').css('color','green');
+        $('.header h2').append(`searching...`);
+        //$('.header h2').fadeOut(5000);
+    } if (attempt === 2) {
+        $('.header h2').empty();
+        //$('.header h2').css('color','orange');
+        $('.header h2').append('please be patient...');
+        // $('.header h2').fadeOut(5000);
+    }
     let args = genre;
     let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
     fetch(proxyUrl + targetUrl)
@@ -16,7 +30,7 @@ function queryGenre(genre, limit) {
         .then(data => {
             if (attempt < 3) {
                 let arr = data.response.data.stationlist
-                //recursion to handle incomplete reponses from shoutcast
+                //use recursion to handle incomplete reponses from shoutcast
                 if (arr.station == null) {
                     queryGenre(args, limit);
                 }
@@ -26,15 +40,19 @@ function queryGenre(genre, limit) {
                 //try and handle bad search requests
                 // such as  queryGenre(safsafsd, limit)
             } else {
-                alert('Nothing Found :(');
+                failure();
                 $('.landing').show();
                 $('.sk-circle').hide();
             }
         })
-        .catch(error => alert('something went wrong, please try again'));
+        .catch(error => failure());
 };
 //build the queue
 function buildQueue(args, genre) {
+    /*
+    $('.header h2').empty();
+    $('.header h2').append('building queue');
+    */
     let targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     let response = args.response.data.stationlist.station;
     for (let i = 0; i < response.length; i++) {
@@ -56,22 +74,40 @@ function buildQueue(args, genre) {
                     };
                     checkAudio(station, genre);
                 } catch{
+                    denomitaor--;
                     //nohting to do, the station is corrupt
                     //no need to display a bad station 
                     //to a user or let them know about it
                     //move on to parse the next url
                 }
             })
-            .catch(error => alert('Nothing Found :('));
+            .catch(error => failure());
     }
+
+}
+function failure() {
+    $('.header h2').empty();
+    $('.header h2').append('nothing found!');
+    $('.header h2').css('color', 'red');
+    $('#searchInput').val('Search a music genre...');
+    $('.header h2').fadeOut(5000);
 }
 //make sure the station will play
-function checkAudio(station, genre) {
+function checkAudio(station) {
     renderStation(station);
     let audioElement = document.createElement('audio');
     audioElement.src = station.url;
+    numerator++;
     audioElement.onerror = function () {
+        numerator--;
+        denomitaor--;
         $(`.${station.id}`).hide();
+    }
+    $('.header h2').empty();
+    progress = (numerator / denomitaor) * 100
+    $('.header h2').append(`${progress.toFixed(2)}%`);
+    if (progress === 100) {
+        $('.header h2').empty();
     }
 }
 //render the stations to the DOM
@@ -112,6 +148,7 @@ function shout(id, url, state) {
         $('audio').hide();
         sounds = document.getElementsByTagName('audio')[0];
         sounds.addEventListener('playing', function () {
+            console.log('playing');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
             <div class='lds-facebook'>
@@ -124,6 +161,7 @@ function shout(id, url, state) {
             </div>`);
         }, true);
         sounds.addEventListener('loadstart', function () {
+            console.log('loading');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
             <div class='lds-ellipsis'>
@@ -138,6 +176,7 @@ function shout(id, url, state) {
             </div>`);
         }, true);
         sounds.addEventListener('waiting', function () {
+            console.log('waiting');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
             <div class='lds-ellipsis'>
@@ -152,6 +191,7 @@ function shout(id, url, state) {
             </div>`);
         }, true);
     }
+
     else {
         sounds = document.getElementsByTagName('audio');
         for (i = 0; i < sounds.length; i++) sounds[i].remove();
@@ -159,6 +199,9 @@ function shout(id, url, state) {
 }
 //set up the queryGenre function for arguments
 function searchGenre() {
+    attempt = 0;
+    numerator = 0
+    denomitaor = limit;
     var toast = document.getElementById('snackbar');
     toast.className = 'show';
     setTimeout(function () { toast.className = toast.className.replace('show', ''); }, 2900);
@@ -173,6 +216,8 @@ function searchGenre() {
 }
 //add listeners and remove loading circle
 function initiate() {
+    $('.header h2').empty();
+    $('.sk-circle').hide();
     $('#searchBtn').click(function () {
         attempt = 0;
         $('.landing').show();
@@ -191,7 +236,9 @@ function initiate() {
             searchGenre();
         }
     });
-    $('.sk-circle').hide();
+    
+
+    
 }
 document.addEventListener('DOMContentLoaded', function () {
     initiate();
