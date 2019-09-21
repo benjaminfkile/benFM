@@ -109,6 +109,7 @@ function checkAudio(station) {
     if (progress === 100) {
         $('.header h2').empty();
     }
+
 }
 //render the stations to the DOM
 function renderStation(station) {
@@ -131,11 +132,12 @@ function renderStation(station) {
     );
     $(`#${station.id}`).click(function () {
         station.state++;
-        shout(station.id, station.url, station.state)
+        $('.header h2').empty();
+        shout(station.id, station.url, station.state, station.name)
     });
 }
 //play the clicked tile
-function shout(id, url, state) {
+function shout(id, url, state, name) {
     let sounds = document.getElementsByTagName('audio');
     for (i = 0; i < sounds.length; i++) sounds[i].remove();
     $('.stationState').empty();
@@ -148,6 +150,8 @@ function shout(id, url, state) {
         $('audio').hide();
         sounds = document.getElementsByTagName('audio')[0];
         sounds.addEventListener('playing', function () {
+            $('.header h2').empty();
+            $('.header h2').append(`LIVE`);
             console.log('playing');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
@@ -161,6 +165,8 @@ function shout(id, url, state) {
             </div>`);
         }, true);
         sounds.addEventListener('loadstart', function () {
+            $('.header h2').empty();
+            $('.header h2').append(`Connecting...`);
             console.log('loading');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
@@ -176,6 +182,8 @@ function shout(id, url, state) {
             </div>`);
         }, true);
         sounds.addEventListener('waiting', function () {
+            $('.header h2').empty();
+            $('.header h2').append('Waiting for network...');
             console.log('waiting');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
@@ -236,9 +244,7 @@ function initiate() {
             searchGenre();
         }
     });
-    
 
-    
 }
 document.addEventListener('DOMContentLoaded', function () {
     initiate();
