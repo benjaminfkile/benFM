@@ -6,35 +6,43 @@ const key = 'OVxbFpTaTgaBkwGC';
 const limit = 50;
 //attempts at api call
 let attempt = 0;
-//query shoutcast
-let numerator = 1;
+//numerator of progress
+let numerator = 0;
+//denominator of progress
 let denomitaor = limit;
+//progress is converted to a percentage on station load
 let progress = 0;
+//query shoutcast
 function queryGenre(genre, limit) {
     attempt++;
     if (attempt === 1) {
+        //let user know its searching
         $('.header h2').empty();
-        //$('.header h2').css('color','green');
         $('.header h2').append(`searching...`);
-        //$('.header h2').fadeOut(5000);
+        //let the user know to be patient
     } if (attempt === 2) {
         $('.header h2').empty();
-        //$('.header h2').css('color','orange');
         $('.header h2').append('please be patient...');
-        // $('.header h2').fadeOut(5000);
+
     }
+    //create a variable to hold the value of genre
+    //for recursion bellow
     let args = genre;
+    //url passed to SHOUTcast
     let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
     fetch(proxyUrl + targetUrl)
         .then(response => response.json())
         .then(data => {
+            //try 3 times before giving up
             if (attempt < 3) {
                 let arr = data.response.data.stationlist
                 //use recursion to handle incomplete reponses from shoutcast
                 if (arr.station == null) {
+                    //if the response is null, call this method again
                     queryGenre(args, limit);
                 }
                 else {
+                    //if not, builQueue()
                     buildQueue(data, genre);
                 }
                 //try and handle bad search requests
@@ -49,10 +57,6 @@ function queryGenre(genre, limit) {
 };
 //build the queue
 function buildQueue(args, genre) {
-    /*
-    $('.header h2').empty();
-    $('.header h2').append('building queue');
-    */
     let targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     let response = args.response.data.stationlist.station;
     for (let i = 0; i < response.length; i++) {
@@ -72,20 +76,18 @@ function buildQueue(args, genre) {
                         url: oDOM.getElementsByTagName('location')[0].textContent,
                         state: 1
                     };
+                    //check to see if the station will play
                     checkAudio(station, genre);
                 } catch{
+                    //decrement the sum of stations
                     denomitaor--;
-                    //nohting to do, the station is corrupt
-                    //no need to display a bad station 
-                    //to a user or let them know about it
-                    //move on to parse the next url
                 }
             })
             .catch(error => failure());
     }
-
 }
 function failure() {
+    //alert the use there was an issue
     $('.header h2').empty();
     $('.header h2').append('nothing found!');
     $('.header h2').css('color', 'red');
@@ -94,22 +96,24 @@ function failure() {
 }
 //make sure the station will play
 function checkAudio(station) {
+    //station passed first test
+    numerator++;
     renderStation(station);
     let audioElement = document.createElement('audio');
     audioElement.src = station.url;
-    numerator++;
     audioElement.onerror = function () {
+        //station failed the second
         numerator--;
         denomitaor--;
         $(`.${station.id}`).hide();
     }
+    //render regardless then hide the corrupt stations
     $('.header h2').empty();
     progress = (numerator / denomitaor) * 100
     $('.header h2').append(`${progress.toFixed(2)}%`);
     if (progress === 100) {
         $('.header h2').empty();
     }
-
 }
 //render the stations to the DOM
 function renderStation(station) {
@@ -138,9 +142,13 @@ function renderStation(station) {
 }
 //play the clicked tile
 function shout(id, url, state, name) {
+    //remove all other sounds
     let sounds = document.getElementsByTagName('audio');
     for (i = 0; i < sounds.length; i++) sounds[i].remove();
     $('.stationState').empty();
+    //all states start at one, if state is divisible by two
+    //the station is on, else it is off
+    //each time a station is clicked its state is incremented by one
     if (state % 2 == 0) {
         $(`.${id}`).append(`
             <audio id='aud' controls autoplay>
@@ -148,11 +156,11 @@ function shout(id, url, state, name) {
             </audio>`
         );
         $('audio').hide();
+        //add listeners to know when the station plays, loading or waiting for network
         sounds = document.getElementsByTagName('audio')[0];
         sounds.addEventListener('playing', function () {
             $('.header h2').empty();
             $('.header h2').append(`LIVE`);
-            console.log('playing');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
             <div class='lds-facebook'>
@@ -167,7 +175,6 @@ function shout(id, url, state, name) {
         sounds.addEventListener('loadstart', function () {
             $('.header h2').empty();
             $('.header h2').append(`Connecting...`);
-            console.log('loading');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
             <div class='lds-ellipsis'>
@@ -184,7 +191,6 @@ function shout(id, url, state, name) {
         sounds.addEventListener('waiting', function () {
             $('.header h2').empty();
             $('.header h2').append('Waiting for network...');
-            console.log('waiting');
             $(`#${id}state`).empty();
             $(`#${id}state`).append(`
             <div class='lds-ellipsis'>
@@ -199,7 +205,7 @@ function shout(id, url, state, name) {
             </div>`);
         }, true);
     }
-
+    //if state is an odd number, stop the playback
     else {
         sounds = document.getElementsByTagName('audio');
         for (i = 0; i < sounds.length; i++) sounds[i].remove();
@@ -210,14 +216,14 @@ function searchGenre() {
     attempt = 0;
     numerator = 0
     denomitaor = limit;
-    var toast = document.getElementById('snackbar');
-    toast.className = 'show';
-    setTimeout(function () { toast.className = toast.className.replace('show', ''); }, 2900);
     let search = (document.getElementById('searchInput').value);
+    //make sure isn't an empty field
     if ((search !== "") && (search !== 'Search a music genre...')) {
         queryGenre(search, limit)
+        var toast = document.getElementById('snackbar');
+        toast.className = 'show';
+        setTimeout(function () { toast.className = toast.className.replace('show', ''); }, 2900);
     } else {
-        alert('SEARCH FOR A GENRE BELOW!');
         $('#searchInput').val('Search a music genre...');
         $('.sk-circle').hide();
     }
@@ -244,8 +250,13 @@ function initiate() {
             searchGenre();
         }
     });
-
+    $('input').click(function (args) {
+        attempt = 0;
+        $('#searchInput').val('');
+        
+    });
 }
+//wait for dom to load before initiate()
 document.addEventListener('DOMContentLoaded', function () {
     initiate();
 });
