@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <title>benFM</title>
     <meta name="description" content="Shoutcast Stream Player">
+    <link rel="stylesheet" href="./css/desktop.css">
     <link rel="stylesheet" href="./css/portrait.css">
-    <link rel="stylesheet" href="./css/landscape.css">        
+    <link rel="stylesheet" href="./css/landscape.css">
     <link rel="stylesheet" href="./css/laptop.css">
-    <link rel="stylesheet" href="./css/desktop.css">  
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./js/script.js"></script>
@@ -23,19 +23,19 @@
             0%
         </h2>
     </header>
-    <div class="search">
+    <section class="search">
         <input type="text" onfocus="this.value=''" id="searchInput" autocomplete="off" value="Search a music genre...">
         <button type="submit" id="searchBtn">
             <img src="./res/search.png" alt="submit" />
         </button>
-    </div>
+    </section>
     <main class="contentContainer">
-        <div class=landing>
+        <section class=landing>
             <h2>
                 powered by
             </h2>
             <img src="./res/shout.png" alt="Shoutcast Logo">
-        </div>
+        </section>
         <div class="sk-circle">
             <div class="sk-circle1 sk-child"></div>
             <div class="sk-circle2 sk-child"></div>
@@ -50,14 +50,11 @@
             <div class="sk-circle11 sk-child"></div>
             <div class="sk-circle12 sk-child"></div>
         </div>
-        <div class="searchResults">
-        </div>
-        <footer id="snackbar">click a tile to play or pause a station
-        </footer>
+        <section class="searchResults">
+        </section>
     </main>
-
-
-
+    <footer id="snackbar">click a tile to play or pause a station
+    </footer>
 </body>
 
 </html>

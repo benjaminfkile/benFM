@@ -1,5 +1,6 @@
 /*portrait*/
-@media (min-width: 768px) and (max-width: 1024px) {
+/*@media (min-width: 768px) and (max-width: 1024px) {*/
+  @media (max-width: 1024px) {
   *{
     margin: 0px;
     padding: 0px;
@@ -22,6 +23,7 @@
     width: 100%;
     margin-right: 3%;
     margin-top: 25px;
+    font-size: 30px;
     text-align: right;
     white-space: nowrap;
     color: rgb(255, 255, 255);
@@ -74,7 +76,7 @@
     width: 64px;
     height: 64px;
   }
-  .searchResults{
+    .searchResults{
     overflow-y: auto;
     overflow-x: hidden;
     margin-left: auto;
@@ -110,11 +112,13 @@
     font-size: 45px;
     margin: 10px;
   }
+  
   .searchResults img{
     margin: 10px;
     width: 256px;
     height: 256px;
   }
+  
   .searchResults .stationState{
     width: 50px;
     margin-left: 45%;
@@ -203,7 +207,9 @@
     height: 26px;
   }
 }
+
 /***************************************/
+
 .lds-ellipsis {
   display: inline-block;
   position: relative;
@@ -380,4 +386,5 @@
     -webkit-transform: scale(1);
             transform: scale(1);
   }
+  
 }

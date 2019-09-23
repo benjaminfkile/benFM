@@ -1,4 +1,4 @@
-//heroku proxy URL to stop corb errors
+//heroku proxy URL to help stop corb errors
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 //my shoutcast developer key
 const key = 'OVxbFpTaTgaBkwGC';
@@ -23,7 +23,6 @@ function queryGenre(genre, limit) {
     } if (attempt === 2) {
         $('.header h2').empty();
         $('.header h2').append('please be patient...');
-
     }
     //create a variable to hold the value of genre
     //for recursion bellow
@@ -46,7 +45,7 @@ function queryGenre(genre, limit) {
                     buildQueue(data, genre);
                 }
                 //try and handle bad search requests
-                // such as  queryGenre(safsafsd, limit)
+                //such as queryGenre(safsafsd, limit)
             } else {
                 failure();
                 $('.landing').show();
@@ -60,7 +59,7 @@ function buildQueue(args, genre) {
     let targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
     let response = args.response.data.stationlist.station;
     for (let i = 0; i < response.length; i++) {
-        fetch(proxyUrl + targetUrl + response[i].id, { mode: 'cors' })
+        fetch(proxyUrl + targetUrl + response[i].id, { mode: 'cors'})
             .then((res) => res.text())
             .then(responseXML => {
                 let oParser = new DOMParser();
@@ -76,9 +75,11 @@ function buildQueue(args, genre) {
                         url: oDOM.getElementsByTagName('location')[0].textContent,
                         state: 1
                     };
+                    //station passed first test
                     //check to see if the station will play
                     checkAudio(station, genre);
                 } catch{
+                    //station failed first test, move on
                     //decrement the sum of stations
                     denomitaor--;
                 }
@@ -87,7 +88,7 @@ function buildQueue(args, genre) {
     }
 }
 function failure() {
-    //alert the use there was an issue
+    //alert the user there was an issue
     $('.header h2').empty();
     $('.header h2').append('nothing found!');
     $('.header h2').css('color', 'red');
@@ -96,20 +97,20 @@ function failure() {
 }
 //make sure the station will play
 function checkAudio(station) {
-    //station passed first test
     numerator++;
     renderStation(station);
     let audioElement = document.createElement('audio');
     audioElement.src = station.url;
     audioElement.onerror = function () {
-        //station failed the second
+        //station failed the second test
         numerator--;
         denomitaor--;
         $(`.${station.id}`).hide();
     }
     //render regardless then hide the corrupt stations
     $('.header h2').empty();
-    progress = (numerator / denomitaor) * 100
+    //calculate the rendering process percentage
+    progress = (numerator/denomitaor) * 100
     $('.header h2').append(`${progress.toFixed(2)}%`);
     if (progress === 100) {
         $('.header h2').empty();
@@ -137,11 +138,11 @@ function renderStation(station) {
     $(`#${station.id}`).click(function () {
         station.state++;
         $('.header h2').empty();
-        shout(station.id, station.url, station.state, station.name)
+        shout(station.id, station.url, station.state)
     });
 }
 //play the clicked tile
-function shout(id, url, state, name) {
+function shout(id, url, state) {
     //remove all other sounds
     let sounds = document.getElementsByTagName('audio');
     for (i = 0; i < sounds.length; i++) sounds[i].remove();
