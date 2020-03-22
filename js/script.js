@@ -101,12 +101,12 @@ function checkAudio(station) {
     renderStation(station);
     let audioElement = document.createElement('audio');
     audioElement.src = station.url;
-    audioElement.onerror = function () {
-        //station failed the second test
-        numerator--;
-        denomitaor--;
-        $(`.${station.id}`).hide();
-    }
+    // audioElement.onerror = function () {
+    //     //station failed the second test
+    //     numerator--;
+    //     denomitaor--;
+    //     $(`.${station.id}`).hide();
+    // }
     //render regardless then hide the corrupt stations
     $('.header h2').empty();
     //calculate the rendering process percentage
