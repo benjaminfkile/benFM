@@ -1,5 +1,5 @@
 //heroku proxy URL to help stop corb errors
-const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const proxyUrl = 'https://murmuring-retreat-89479.herokuapp.com/';
 //my shoutcast developer key
 const key = 'OVxbFpTaTgaBkwGC';
 //limit of results from shoutcast
@@ -28,63 +28,47 @@ function queryGenre(genre, limit) {
     //for recursion bellow
     let args = genre;
     //url passed to SHOUTcast
-    let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
-    fetch(proxyUrl + targetUrl)
-        .then(response => response.json())
-        .then(data => {
-            //try 3 times before giving up
-            if (attempt < 3) {
-                let arr = data.response.data.stationlist
-                //use recursion to handle incomplete reponses from shoutcast
-                if (arr.station == null) {
-                    //if the response is null, call this method again
-                    queryGenre(args, limit);
-                }
-                else {
-                    //if not, builQueue()
-                    buildQueue(data, genre);
-                }
-                //try and handle bad search requests
-                //such as queryGenre(safsafsd, limit)
-            } else {
-                failure();
-                $('.landing').show();
-                $('.sk-circle').hide();
-            }
-        })
-        .catch(error => failure());
+    // let targetUrl = `http://api.shoutcast.com/station/advancedsearch?mt=audio/mpeg&search=${genre}&limit=${limit}&f=json&k=${key}`;
+    fetch(`https://murmuring-retreat-89479.herokuapp.com/api/genre/${genre}`, { mode: "cors" })
+        .then(res => res.json())
+        .then(res => {
+            buildQueue(res.data)
+        }).catch(error => failure());
 };
 //build the queue
-function buildQueue(args, genre) {
-    let targetUrl = `http://yp.shoutcast.com/sbin/tunein-station.xspf?id=`;
-    let response = args.response.data.stationlist.station;
-    for (let i = 0; i < response.length; i++) {
-        fetch(proxyUrl + targetUrl + response[i].id, { mode: 'cors'})
-            .then((res) => res.text())
+function buildQueue(stations, genre) {
+    let targetUrl = `https://murmuring-retreat-89479.herokuapp.com/api/station/`;
+    console.log(stations)
+    for (let i = 0; i < stations.length; i++) {
+        fetch(targetUrl + stations[i].id)
+            // .then((res) => res.text())
+            .then(res => res.json())
             .then(responseXML => {
+                let data = responseXML.data
+                console.log(data)
                 let oParser = new DOMParser();
-                let oDOM = oParser.parseFromString(responseXML, 'application/xml');
+                let oDOM = oParser.parseFromString(data, 'application/xml');
                 try {
                     let station = {
-                        name: response[i].name,
-                        genre: response[i].genre,
-                        bitRate: response[i].br,
-                        listeners: response[i].lc,
-                        logo: response[i].logo,
-                        id: response[i].id,
+                        name: stations[i].name,
+                        genre: stations[i].genre,
+                        bitRate: stations[i].br,
+                        listeners: stations[i].lc,
+                        logo: stations[i].logo,
+                        id: stations[i].id,
                         url: oDOM.getElementsByTagName('location')[0].textContent,
                         state: 1
                     };
                     //station passed first test
                     //check to see if the station will play
                     checkAudio(station, genre);
-                } catch{
+                } catch {
                     //station failed first test, move on
                     //decrement the sum of stations
                     denomitaor--;
                 }
             })
-            .catch(error => failure());
+            .catch(error => console.log(error));
     }
 }
 function failure() {
@@ -110,7 +94,7 @@ function checkAudio(station) {
     //render regardless then hide the corrupt stations
     $('.header h2').empty();
     //calculate the rendering process percentage
-    progress = (numerator/denomitaor) * 100
+    progress = (numerator / denomitaor) * 100
     $('.header h2').append(`${progress.toFixed(2)}%`);
     if (progress === 100) {
         $('.header h2').empty();
@@ -254,7 +238,7 @@ function initiate() {
     $('input').click(function (args) {
         attempt = 0;
         $('#searchInput').val('');
-        
+
     });
 }
 //wait for dom to load before initiate()
